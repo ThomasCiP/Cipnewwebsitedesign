@@ -1,6 +1,6 @@
 import { ExternalLink } from "lucide-react";
-import aclLogo from "figma:asset/7bf03a2e274025b4b1735a3c665bd55659810a89.png";
-import rebuildLogo from "figma:asset/3f28c04d13f8faa09a9ecf8ef730a92bb948f68f.png";
+import aclLogo from "../../assets/7bf03a2e274025b4b1735a3c665bd55659810a89.png";
+import rebuildLogo from "../../assets/3f28c04d13f8faa09a9ecf8ef730a92bb948f68f.png";
 
 interface Partner {
   name: string;
@@ -149,36 +149,36 @@ function PartnerCard({ partner, featured = false }: { partner: Partner; featured
     <article className={`flex flex-col items-start justify-between rounded-2xl bg-charcoal-50 p-6 ring-1 ring-charcoal-200 transition-all hover:bg-white hover:shadow-lg hover:ring-copper-200 ${featured ? 'bg-white shadow-sm ring-charcoal-300' : ''}`}>
       <div className="w-full flex justify-between items-start mb-4">
         <div className="h-12 w-full max-w-[80%] rounded-lg flex items-center justify-start overflow-hidden">
-            {partner.logo ? (
-                 <img 
-                    src={partner.logo} 
-                    alt={`${partner.name} logo`} 
-                    className="h-12 w-auto object-contain object-left"
-                />
-            ) : (
-                <img 
-                    src={`https://www.google.com/s2/favicons?domain=${partner.domain}&sz=128`} 
-                    alt={`${partner.name} logo`} 
-                    className="h-8 w-8 object-contain"
-                    onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
-                    }}
-                />
-            )}
-            <div className={`hidden font-bold text-copper-700 text-lg ${partner.logo ? '' : 'ml-2'}`}>
-                {partner.name.charAt(0)}
-            </div>
+          {partner.logo ? (
+            <img
+              src={partner.logo}
+              alt={`${partner.name} logo`}
+              className="h-12 w-auto object-contain object-left"
+            />
+          ) : (
+            <img
+              src={`https://www.google.com/s2/favicons?domain=${partner.domain}&sz=128`}
+              alt={`${partner.name} logo`}
+              className="h-8 w-8 object-contain"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+                (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+              }}
+            />
+          )}
+          <div className={`hidden font-bold text-copper-700 text-lg ${partner.logo ? '' : 'ml-2'}`}>
+            {partner.name.charAt(0)}
+          </div>
         </div>
         <div className="flex gap-2 flex-wrap justify-end">
-            {partner.tags.slice(0, 1).map((tag) => (
-                <span key={tag} className="inline-flex items-center rounded-full bg-copper-50 px-2 py-1 text-xs font-medium text-copper-700 ring-1 ring-inset ring-copper-600/20">
-                    {tag}
-                </span>
-            ))}
+          {partner.tags.slice(0, 1).map((tag) => (
+            <span key={tag} className="inline-flex items-center rounded-full bg-copper-50 px-2 py-1 text-xs font-medium text-copper-700 ring-1 ring-inset ring-copper-600/20">
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
-      
+
       <div className="group relative flex-1 flex flex-col">
         <h3 className="mt-2 text-lg font-semibold leading-6 text-charcoal-900 group-hover:text-copper-600">
           <a href={partner.link} target="_blank" rel="noopener noreferrer">
@@ -187,14 +187,14 @@ function PartnerCard({ partner, featured = false }: { partner: Partner; featured
           </a>
         </h3>
         <p className="mt-3 line-clamp-3 text-sm leading-6 text-charcoal-600 flex-1">
-            {partner.description}
+          {partner.description}
         </p>
       </div>
 
       <div className="mt-6 flex items-center gap-x-4 w-full pt-4 border-t border-charcoal-100">
-          <a href={partner.link} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold leading-6 text-copper-600 hover:text-copper-500 flex items-center gap-1">
-            Visit Website <ExternalLink className="h-3 w-3" />
-          </a>
+        <a href={partner.link} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold leading-6 text-copper-600 hover:text-copper-500 flex items-center gap-1">
+          Visit Website <ExternalLink className="h-3 w-3" />
+        </a>
       </div>
     </article>
   );

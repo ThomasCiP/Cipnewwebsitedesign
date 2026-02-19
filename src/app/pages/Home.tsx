@@ -1,9 +1,9 @@
 import { Link } from "react-router";
 import { ArrowRight, Calendar, Users, BookOpen, Heart } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import heroImage from "figma:asset/9361df9e8159cfe8be5981faf77b95ebd4f62280.png";
-import aclLogo from "figma:asset/7bf03a2e274025b4b1735a3c665bd55659810a89.png";
-import rebuildLogo from "figma:asset/3f28c04d13f8faa09a9ecf8ef730a92bb948f68f.png";
+import heroImage from "../../assets/9361df9e8159cfe8be5981faf77b95ebd4f62280.png";
+import aclLogo from "../../assets/7bf03a2e274025b4b1735a3c665bd55659810a89.png";
+import rebuildLogo from "../../assets/3f28c04d13f8faa09a9ecf8ef730a92bb948f68f.png";
 
 export default function Home() {
   return (

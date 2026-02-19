@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { Youtube, Facebook, Mail } from "lucide-react";
-import logo from "figma:asset/fb5b9a6591cbe94e0158b8221522cba11dc74df3.png";
+import logo from "../../../assets/fb5b9a6591cbe94e0158b8221522cba11dc74df3.png";
 
 // Custom generic social icons or use Lucide
 const TiktokIcon = ({ className }: { className?: string }) => (
@@ -41,7 +41,7 @@ export function Footer() {
               </a>
             </div>
           </div>
-          
+
           <div>
             <h3 className="text-sm font-semibold text-charcoal-900 uppercase tracking-wider mb-4">Explore</h3>
             <ul className="space-y-3">
@@ -69,7 +69,7 @@ export function Footer() {
             </p>
           </div>
         </div>
-        
+
         <div className="mt-12 border-t border-charcoal-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-charcoal-500">
             &copy; {new Date().getFullYear()} Christians in Politics. All rights reserved.
