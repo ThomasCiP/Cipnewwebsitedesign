@@ -199,26 +199,26 @@ export default function Home() {
           </p>
           <div className="mx-auto mt-10 grid max-w-lg grid-cols-2 items-start gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-4 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-4">
             <a href="https://freedomforfaith.org.au/" target="_blank" rel="noopener noreferrer" className="group col-span-1 flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
-               <img src="https://www.google.com/s2/favicons?domain=freedomforfaith.org.au&sz=128" alt="Freedom for Faith" className="max-h-12 object-contain grayscale group-hover:grayscale-0 transition-all" />
-               <span className="text-sm font-semibold text-charcoal-600 group-hover:text-copper-700 text-center leading-tight">Freedom for Faith</span>
+              <img src="https://www.google.com/s2/favicons?domain=freedomforfaith.org.au&sz=128" alt="Freedom for Faith" className="max-h-12 object-contain grayscale group-hover:grayscale-0 transition-all" />
+              <span className="text-sm font-semibold text-charcoal-600 group-hover:text-copper-700 text-center leading-tight">Freedom for Faith</span>
             </a>
             <a href="https://www.acl.org.au/" target="_blank" rel="noopener noreferrer" className="group col-span-1 flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
-               <ImageWithFallback src={aclLogo} alt="ACL" className="max-h-12 object-contain grayscale group-hover:grayscale-0 transition-all" />
-               <span className="text-sm font-semibold text-charcoal-600 group-hover:text-copper-700 text-center leading-tight">Australian Christian Lobby</span>
+              <ImageWithFallback src={aclLogo} alt="ACL" className="max-h-12 object-contain grayscale group-hover:grayscale-0 transition-all" />
+              <span className="text-sm font-semibold text-charcoal-600 group-hover:text-copper-700 text-center leading-tight">Australian Christian Lobby</span>
             </a>
             <a href="https://rebuildaustralia.org/" target="_blank" rel="noopener noreferrer" className="group col-span-1 flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
-               <ImageWithFallback src={rebuildLogo} alt="Rebuild Australia" className="max-h-12 object-contain grayscale group-hover:grayscale-0 transition-all" />
-               <span className="text-sm font-semibold text-charcoal-600 group-hover:text-copper-700 text-center leading-tight">Rebuild Australia</span>
+              <ImageWithFallback src={rebuildLogo} alt="Rebuild Australia" className="max-h-12 object-contain grayscale group-hover:grayscale-0 transition-all" />
+              <span className="text-sm font-semibold text-charcoal-600 group-hover:text-copper-700 text-center leading-tight">Rebuild Australia</span>
             </a>
             <a href="https://christiansforlabor.org/" target="_blank" rel="noopener noreferrer" className="group col-span-1 flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
-               <img src="https://www.google.com/s2/favicons?domain=christiansforlabor.org&sz=128" alt="Christians for Labor" className="max-h-12 object-contain grayscale group-hover:grayscale-0 transition-all" />
-               <span className="text-sm font-semibold text-charcoal-600 group-hover:text-copper-700 text-center leading-tight">Christians for Labor</span>
+              <img src="https://www.google.com/s2/favicons?domain=christiansforlabor.org&sz=128" alt="Christians for Labor" className="max-h-12 object-contain grayscale group-hover:grayscale-0 transition-all" />
+              <span className="text-sm font-semibold text-charcoal-600 group-hover:text-copper-700 text-center leading-tight">Christians for Labor</span>
             </a>
           </div>
           <div className="mt-10 text-center">
-             <Link to="/partners" className="text-sm font-medium text-copper-600 hover:text-copper-500">
-                View all partners <span aria-hidden="true">&rarr;</span>
-             </Link>
+            <Link to="/partners" className="text-sm font-medium text-copper-600 hover:text-copper-500">
+              View all partners <span aria-hidden="true">&rarr;</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -226,18 +226,18 @@ export default function Home() {
       {/* Donate Prompt */}
       <section className="bg-copper-700 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="text-center md:text-left">
-                <h2 className="text-2xl font-bold text-white">Support the mission</h2>
-                <p className="mt-2 text-copper-100 max-w-xl">
-                    Your donation helps us organize events, create resources, and encourage Christians across Australia to engage in the public square.
-                </p>
-            </div>
-            <Link
-                to="/donate"
-                className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-copper-700 shadow-sm hover:bg-copper-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-                Donate Now
-            </Link>
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl font-bold text-white">Support the mission</h2>
+            <p className="mt-2 text-copper-100 max-w-xl">
+              Your donation helps us organise events, create resources, and encourage Christians across Australia to engage in the public square.
+            </p>
+          </div>
+          <Link
+            to="/donate"
+            className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-copper-700 shadow-sm hover:bg-copper-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            Donate Now
+          </Link>
         </div>
       </section>
     </div>

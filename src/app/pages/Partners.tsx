@@ -112,29 +112,17 @@ export default function Partners() {
             Our Partners & Friends
           </h1>
           <p className="mt-4 text-lg leading-8 text-charcoal-600">
-            We are proud to stand alongside these organizations in equipping Christians for public life.
+            We are proud to stand alongside these organisations in equipping Christians for public life.
           </p>
         </div>
 
-        {/* Core Partners */}
+        {/* Recommended Partners */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold tracking-tight text-charcoal-900 text-center mb-8">
-            Core Partners
+            Recommended Politically Engaged Christian Organisations
           </h2>
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-            {CORE_PARTNERS.map((partner) => (
-              <PartnerCard key={partner.name} partner={partner} featured />
-            ))}
-          </div>
-        </div>
-
-        {/* Recommended Partners */}
-        <div className="mt-24 border-t border-charcoal-100 pt-16">
-          <h2 className="text-2xl font-bold tracking-tight text-charcoal-900 text-center mb-8">
-            Recommended Organisations
-          </h2>
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-            {RECOMMENDED_PARTNERS.map((partner) => (
+            {[...CORE_PARTNERS, ...RECOMMENDED_PARTNERS].map((partner) => (
               <PartnerCard key={partner.name} partner={partner} />
             ))}
           </div>
