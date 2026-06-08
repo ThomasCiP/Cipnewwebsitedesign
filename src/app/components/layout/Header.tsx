@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router";
 import { Menu, X, Heart } from "lucide-react";
 import { useState } from "react";
 import clsx from "clsx";
-import logo from "../../../assets/fb5b9a6591cbe94e0158b8221522cba11dc74df3.png";
+import logo from "figma:asset/fb5b9a6591cbe94e0158b8221522cba11dc74df3.png";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
