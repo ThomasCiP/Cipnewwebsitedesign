@@ -57,7 +57,7 @@ export function StickyHeader() {
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center">
           <a
-            href="https://members.christiansinpolitics.com/"
+            href="https://network.christiansinpolitics.com/"
             className="rounded-full bg-copper-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-copper-700"
           >
             Join our network
@@ -87,7 +87,7 @@ export function StickyHeader() {
               </button>
             ))}
             <a
-              href="https://members.christiansinpolitics.com/"
+              href="https://network.christiansinpolitics.com/"
               onClick={() => setIsOpen(false)}
               className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-copper-600 px-4 py-3 text-base font-semibold text-white hover:bg-copper-700"
             >

@@ -34,7 +34,7 @@ export function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <a
-              href="https://members.christiansinpolitics.com/"
+              href="https://network.christiansinpolitics.com/"
               className="rounded-full bg-copper-600 px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-copper-700 shadow-2xl shadow-copper-900/40 text-center"
             >
               Join our network

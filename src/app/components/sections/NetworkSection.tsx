@@ -83,7 +83,7 @@ export function NetworkSection() {
             "A community, not a comment section."
           </p>
           <a
-            href="https://members.christiansinpolitics.com/"
+            href="https://network.christiansinpolitics.com/"
             id="join"
             className="inline-block rounded-full bg-copper-600 px-10 py-5 text-lg font-semibold text-white hover:bg-copper-700 transition-colors shadow-2xl shadow-copper-900/40"
           >

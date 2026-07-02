@@ -15,7 +15,7 @@ export function EventsSection() {
             </h2>
           </div>
           <a
-            href="https://members.christiansinpolitics.com/"
+            href="https://network.christiansinpolitics.com/"
             className="inline-flex items-center gap-2 text-copper-600 font-semibold hover:gap-3 transition-all"
           >
             Get notified about new events <ArrowRight className="h-4 w-4" />
