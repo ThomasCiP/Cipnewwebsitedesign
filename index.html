@@ -1,16 +1,65 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>CiP Website Design Wireframe</title>
-      <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
-    </head>
+    <!-- Primary SEO -->
+    <title>Christians in Politics Australia | Faith in Public Life</title>
+    <meta
+      name="description"
+      content="Christians in Politics (CiP) is a non-partisan Australian network encouraging Christians to engage relationally in public life. Invite us to your church or campus, or join our network."
+    />
+    <link rel="canonical" href="https://www.christiansinpolitics.com/" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#1a1a1a" />
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp, iMessage) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Christians in Politics" />
+    <meta property="og:title" content="Christians in Politics Australia" />
+    <meta
+      property="og:description"
+      content="A non-partisan Australian network encouraging Christians to engage relationally in public life."
+    />
+    <meta property="og:url" content="https://www.christiansinpolitics.com/" />
+    <meta property="og:locale" content="en_AU" />
+    <!-- TODO: replace /favicon.png with a purpose-made 1200x630 share image at /og-image.jpg -->
+    <meta property="og:image" content="https://www.christiansinpolitics.com/favicon.png" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Christians in Politics Australia" />
+    <meta
+      name="twitter:description"
+      content="A non-partisan Australian network encouraging Christians to engage relationally in public life."
+    />
+    <meta name="twitter:image" content="https://www.christiansinpolitics.com/favicon.png" />
+
+    <!-- Structured data: Organization -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Christians in Politics",
+        "alternateName": "CiP",
+        "url": "https://www.christiansinpolitics.com/",
+        "logo": "https://www.christiansinpolitics.com/favicon.png",
+        "areaServed": "AU",
+        "description": "A non-partisan Australian network encouraging Christians to engage relationally in public life.",
+        "email": "contact@christiansinpolitics.com"
+      }
+    </script>
+
+    <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

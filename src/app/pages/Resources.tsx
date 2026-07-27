@@ -1,28 +1,38 @@
-import { FileText, Download, PlayCircle, BookOpen } from "lucide-react";
+import { FileText, Download, PlayCircle, BookOpen, ExternalLink } from "lucide-react";
+import { Link } from "react-router";
 
-const resources = [
+type ResourceItem = {
+  title: string;
+  type: string;
+  icon: typeof FileText;
+  to?: string; // internal route
+  href?: string; // external URL
+  comingSoon?: boolean;
+};
+
+const resources: { category: string; items: ResourceItem[] }[] = [
   {
     category: "Getting Started",
     items: [
-      { title: "Why join a political party?", type: "Article", icon: FileText },
-      { title: "Understanding the Australian Political System", type: "Guide", icon: BookOpen },
-      { title: "How to choose a party that fits you", type: "Tool", icon: FileText },
+      { title: "Why join a political party?", type: "Article", icon: FileText, to: "/about" },
+      { title: "Understanding the Australian Political System", type: "Guide", icon: BookOpen, href: "https://peo.gov.au/" },
+      { title: "How to choose a party that fits you", type: "Tool", icon: FileText, to: "/join" },
     ]
   },
   {
     category: "Faithful Public Life",
     items: [
-      { title: "The Salt and Light Framework", type: "Video", icon: PlayCircle },
-      { title: "Disagreement without Division", type: "Article", icon: FileText },
-      { title: "Prayer Guide for Public Officials", type: "PDF", icon: Download },
+      { title: "The Salt and Light Framework", type: "Video", icon: PlayCircle, comingSoon: true },
+      { title: "Disagreement without Division", type: "Article", icon: FileText, comingSoon: true },
+      { title: "Prayer Guide for Public Officials", type: "PDF", icon: Download, comingSoon: true },
     ]
   },
   {
     category: "For Churches",
     items: [
-      { title: "CiP Church Promo Kit", type: "Download", icon: Download },
-      { title: "Hosting a 'Christians in Politics' Sunday", type: "Guide", icon: BookOpen },
-      { title: "Small Group Discussion Guide", type: "PDF", icon: Download },
+      { title: "CiP Church Promo Kit", type: "Download", icon: Download, comingSoon: true },
+      { title: "Hosting a 'Christians in Politics' Sunday", type: "Guide", icon: BookOpen, to: "/contact" },
+      { title: "Small Group Discussion Guide", type: "PDF", icon: Download, comingSoon: true },
     ]
   }
 ];
@@ -63,24 +73,47 @@ export default function Resources() {
                 </div>
                 <div className="mt-6 flex border-t border-charcoal-900/5 pt-6">
                     <ul className="w-full space-y-4">
-                        {section.items.map((item) => (
-                            <li key={item.title} className="relative flex items-center gap-x-4 rounded-lg p-4 hover:bg-white hover:shadow-sm transition-all">
-                                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-charcoal-100 group-hover:bg-white">
-                                    <item.icon className="h-5 w-5 text-charcoal-600 group-hover:text-copper-600" aria-hidden="true" />
+                        {section.items.map((item) => {
+                            const isLink = Boolean(item.to || item.href);
+                            return (
+                            <li
+                                key={item.title}
+                                className={`relative flex items-center gap-x-4 rounded-lg p-4 transition-all ${
+                                    isLink ? "hover:bg-white hover:shadow-sm" : "opacity-70"
+                                }`}
+                            >
+                                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-charcoal-100">
+                                    <item.icon className="h-5 w-5 text-charcoal-600" aria-hidden="true" />
                                 </div>
                                 <div className="flex-auto">
                                     <h4 className="text-sm font-semibold leading-6 text-charcoal-900">
-                                        <a href="#">
-                                            <span className="absolute inset-0" />
-                                            {item.title}
-                                        </a>
+                                        {item.to ? (
+                                            <Link to={item.to} className="hover:text-copper-600">
+                                                <span className="absolute inset-0" />
+                                                {item.title}
+                                            </Link>
+                                        ) : item.href ? (
+                                            <a href={item.href} target="_blank" rel="noopener noreferrer" className="hover:text-copper-600">
+                                                <span className="absolute inset-0" />
+                                                {item.title}
+                                            </a>
+                                        ) : (
+                                            <span className="text-charcoal-700">{item.title}</span>
+                                        )}
                                     </h4>
-                                    <p className="mt-1 flex text-xs leading-5 text-charcoal-500">
+                                    <p className="mt-1 flex items-center gap-2 text-xs leading-5 text-charcoal-500">
                                         {item.type}
+                                        {item.href && <ExternalLink className="h-3 w-3" aria-hidden="true" />}
+                                        {item.comingSoon && (
+                                            <span className="inline-flex items-center rounded-full bg-charcoal-100 px-2 py-0.5 text-[10px] font-medium text-charcoal-500 ring-1 ring-inset ring-charcoal-200">
+                                                Coming soon
+                                            </span>
+                                        )}
                                     </p>
                                 </div>
                             </li>
-                        ))}
+                            );
+                        })}
                     </ul>
                 </div>
               </div>
