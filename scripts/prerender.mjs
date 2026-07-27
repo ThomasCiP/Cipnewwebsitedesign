@@ -12,7 +12,7 @@
 
 import { preview } from 'vite'
 import puppeteer from 'puppeteer-core'
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, writeFile, readFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -21,23 +21,41 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const DIST = resolve(__dirname, '..', 'dist')
 const ORIGIN = 'https://www.christiansinpolitics.com'
 
-// Locate a Chrome/Chromium executable. Prerendering needs a real browser; if
-// none is found (e.g. a remote CI/Vercel Linux build with no browser installed)
-// we skip prerendering rather than failing the build — the SPA still ships.
-function findChrome() {
-  const candidates = [
-    process.env.PUPPETEER_EXECUTABLE_PATH,
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    '/Applications/Chromium.app/Contents/MacOS/Chromium',
-    '/usr/bin/google-chrome',
-    '/usr/bin/google-chrome-stable',
-    '/usr/bin/chromium',
-    '/usr/bin/chromium-browser',
-  ].filter(Boolean)
-  return candidates.find((p) => existsSync(p)) || null
-}
+// Locate a Chrome/Chromium executable.
+//
+// Locally that's the system Chrome. On Vercel's Linux build container there is
+// none, so we fall back to @sparticuz/chromium, a Chromium build packaged for
+// serverless/Amazon Linux that unpacks itself to /tmp on first use.
+//
+// Set PRERENDER_NO_SYSTEM_CHROME=1 to skip the system paths — useful for testing
+// the Vercel code path on a Mac that has Chrome installed.
+async function findChrome() {
+  if (!process.env.PRERENDER_NO_SYSTEM_CHROME) {
+    const candidates = [
+      process.env.PUPPETEER_EXECUTABLE_PATH,
+      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      '/Applications/Chromium.app/Contents/MacOS/Chromium',
+      '/usr/bin/google-chrome',
+      '/usr/bin/google-chrome-stable',
+      '/usr/bin/chromium',
+      '/usr/bin/chromium-browser',
+    ].filter(Boolean)
+    const found = candidates.find((p) => existsSync(p))
+    if (found) return { executablePath: found, args: ['--no-sandbox', '--disable-setuid-sandbox'] }
+  }
 
-const CHROME = findChrome()
+  try {
+    const { default: chromium } = await import('@sparticuz/chromium')
+    const executablePath = await chromium.executablePath()
+    if (executablePath && existsSync(executablePath)) {
+      console.log('  · using @sparticuz/chromium (no system Chrome found)')
+      return { executablePath, args: chromium.args }
+    }
+  } catch (err) {
+    console.warn(`  · @sparticuz/chromium unavailable: ${err.message}`)
+  }
+  return null
+}
 
 // One entry per route. `title` and `description` are the SEO metadata baked into
 // that page's static HTML. Edit these freely — this is the single source of
@@ -127,12 +145,62 @@ function applyMeta({ title, description, canonical }) {
   set('link[rel="canonical"]', 'href', canonical)
 }
 
+// Fallback used when no browser is available at all. Rewrites the SEO tags in
+// the built index.html by string substitution and writes one file per route.
+//
+// This gets us unique titles/descriptions/canonicals without a browser — which
+// is the part that actually matters for search. What it can't do is bake the
+// rendered React content into the HTML, so crawlers that don't execute JS see
+// an empty shell. Strictly worse than a real prerender, strictly better than
+// nine pages sharing the homepage's title.
+function rewriteMeta(html, { title, description, canonical }) {
+  const esc = (s) =>
+    String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+  let out = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(title)}</title>`)
+
+  const setMeta = (attr, name, value) => {
+    // content after the identifying attribute…
+    const after = new RegExp(`(<meta[^>]*\\b${attr}=["']${name}["'][^>]*\\bcontent=["'])[^"']*(["'])`, 'i')
+    if (after.test(out)) {
+      out = out.replace(after, `$1${esc(value)}$2`)
+      return
+    }
+    // …or before it.
+    const before = new RegExp(`(<meta[^>]*\\bcontent=["'])[^"']*(["'][^>]*\\b${attr}=["']${name}["'])`, 'i')
+    if (before.test(out)) out = out.replace(before, `$1${esc(value)}$2`)
+  }
+
+  setMeta('name', 'description', description)
+  setMeta('property', 'og:title', title)
+  setMeta('property', 'og:description', description)
+  setMeta('property', 'og:url', canonical)
+  setMeta('name', 'twitter:title', title)
+  setMeta('name', 'twitter:description', description)
+  out = out.replace(
+    /(<link[^>]*\brel=["']canonical["'][^>]*\bhref=["'])[^"']*(["'])/i,
+    `$1${esc(canonical)}$2`
+  )
+  return out
+}
+
+async function metaOnlyFallback() {
+  const shell = await readFile(resolve(DIST, 'index.html'), 'utf8')
+  for (const route of ROUTES) {
+    const canonical = route.path === '/' ? `${ORIGIN}/` : `${ORIGIN}${route.path}`
+    const html = rewriteMeta(shell, { title: route.title, description: route.description, canonical })
+    const outPath = resolve(DIST, route.out)
+    await mkdir(dirname(outPath), { recursive: true })
+    await writeFile(outPath, html, 'utf8')
+    console.log(`  ~ meta-only  ${route.path.padEnd(14)} -> dist/${route.out}`)
+  }
+}
+
 async function run() {
+  const CHROME = await findChrome()
   if (!CHROME) {
-    console.warn(
-      '\n⚠  Prerender skipped: no Chrome/Chromium found. Shipping the un-prerendered SPA.\n' +
-        '   (Deploy from a machine with Chrome, or set PUPPETEER_EXECUTABLE_PATH, to prerender.)\n'
-    )
+    console.warn('\n⚠  No Chrome/Chromium found — falling back to meta-only prerender.\n')
+    await metaOnlyFallback()
     return
   }
 
@@ -142,11 +210,23 @@ async function run() {
   })
   const base = server.resolvedUrls?.local?.[0]?.replace(/\/$/, '') || 'http://localhost:4183'
 
-  const browser = await puppeteer.launch({
-    executablePath: CHROME,
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  })
+  // Launching can fail even when the binary exists — e.g. @sparticuz/chromium
+  // is a Linux x64 build, so it unpacks fine on a Mac and then dies with
+  // ENOEXEC. Never let that fail the build: shipping the site with weaker SEO
+  // beats not shipping it at all.
+  let browser
+  try {
+    browser = await puppeteer.launch({
+      executablePath: CHROME.executablePath,
+      headless: true,
+      args: CHROME.args,
+    })
+  } catch (err) {
+    console.warn(`\n⚠  Chrome failed to launch (${err.code || err.message}) — falling back to meta-only.\n`)
+    await server.httpServer.close()
+    await metaOnlyFallback()
+    return
+  }
 
   try {
     for (const route of ROUTES) {
