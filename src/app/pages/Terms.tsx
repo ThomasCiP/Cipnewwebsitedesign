@@ -12,9 +12,13 @@ export default function Terms() {
     >
       <H2>Agreement</H2>
       <P>
-        These terms are between you and Christians in Politics Australia Ltd ("CiP", "we", "us"). By
-        creating an account or using the CiP Network, you agree to them. If you do not agree, please
-        do not use the network.
+        These terms are between you and <strong>Christians in Politics Australia Ltd</strong> (ABN{" "}
+        <strong>93 697 747 630</strong>) — "CiP", "we", "us" — a public company limited by guarantee
+        registered as a charity with the Australian Charities and Not-for-profits Commission (ACNC).
+      </P>
+      <P>
+        By creating an account or using the CiP Network, you agree to these terms. If you do not
+        agree, please do not use the network.
       </P>
 
       <H2>Who can join</H2>

@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Mail, Heart, Facebook, Instagram, Linkedin } from "lucide-react";
 import logo from "figma:asset/fb5b9a6591cbe94e0158b8221522cba11dc74df3.png";
 
@@ -149,16 +150,34 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-charcoal-700 pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-charcoal-400">
-              © {new Date().getFullYear()} Christians in Politics. All rights reserved.
+            <p className="text-sm text-charcoal-400 text-center sm:text-left">
+              © {new Date().getFullYear()} Christians in Politics Australia Ltd
+              <span className="hidden sm:inline"> · </span>
+              <span className="block sm:inline">ABN 93 697 747 630</span>
+              <span className="hidden sm:inline"> · </span>
+              <span className="block sm:inline">A charity registered with the ACNC</span>
             </p>
+            {/* These were href="#privacy" / "#terms" — anchors to sections that
+                don't exist, so the links did nothing. They're real pages now. */}
             <div className="flex gap-6">
-              <a href="#privacy" className="text-sm text-charcoal-400 hover:text-copper-400 transition-colors">
+              <Link
+                to="/privacy"
+                className="text-sm text-charcoal-400 hover:text-copper-400 transition-colors"
+              >
                 Privacy Policy
-              </a>
-              <a href="#terms" className="text-sm text-charcoal-400 hover:text-copper-400 transition-colors">
+              </Link>
+              <Link
+                to="/terms"
+                className="text-sm text-charcoal-400 hover:text-copper-400 transition-colors"
+              >
                 Terms of Use
-              </a>
+              </Link>
+              <Link
+                to="/support"
+                className="text-sm text-charcoal-400 hover:text-copper-400 transition-colors"
+              >
+                Support
+              </Link>
             </div>
           </div>
         </div>

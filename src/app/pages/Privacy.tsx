@@ -12,9 +12,14 @@ export default function Privacy() {
     >
       <H2>Who we are</H2>
       <P>
-        This policy applies to Christians in Politics Australia Ltd (ABN-registered charity), and to
-        the CiP Network — our member web portal at network.christiansinpolitics.com and the CiP
-        Network mobile apps for iOS and Android. It also covers this website.
+        This policy is issued by <strong>Christians in Politics Australia Ltd</strong> (ABN{" "}
+        <strong>93 697 747 630</strong>), a public company limited by guarantee, registered as a
+        charity with the Australian Charities and Not-for-profits Commission (ACNC) and based in New
+        South Wales.
+      </P>
+      <P>
+        It applies to the CiP Network — our member web portal at network.christiansinpolitics.com and
+        the CiP Network mobile apps for iOS and Android — and to this website.
       </P>
       <P>
         We handle personal information in accordance with the <em>Privacy Act 1988</em> (Cth) and the

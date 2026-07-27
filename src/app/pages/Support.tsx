@@ -212,8 +212,8 @@ export default function Support() {
           </div>
 
           <p className="mt-10 text-sm text-charcoal-500">
-            Christians in Politics Australia Ltd is a registered charity. The CiP Network is free to
-            members.
+            Christians in Politics Australia Ltd (ABN 93 697 747 630) is a charity registered with
+            the ACNC. The CiP Network is free to members.
           </p>
         </div>
       </div>
