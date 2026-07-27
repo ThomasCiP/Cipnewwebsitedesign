@@ -10,6 +10,9 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Donate from "./pages/Donate";
 import Support from "./pages/Support";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import NotFound from "./pages/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +29,12 @@ export const router = createBrowserRouter([
       { path: "contact", Component: Contact },
       { path: "donate", Component: Donate },
       { path: "support", Component: Support },
-      { path: "*", Component: Home },
+      { path: "privacy", Component: Privacy },
+      { path: "terms", Component: Terms },
+      // Unknown paths render a real not-found page. This used to render Home,
+      // which meant every mistyped URL returned 200 with the homepage on it —
+      // invisible to users following a bad link, and duplicate content to Google.
+      { path: "*", Component: NotFound },
     ],
   },
 ]);

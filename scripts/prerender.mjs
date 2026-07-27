@@ -125,6 +125,29 @@ const ROUTES = [
       'Help with the CiP Network app and member portal — signing in, confirmation emails, resetting your password, deleting your account, reporting content and privacy settings.',
   },
   {
+    path: '/privacy',
+    out: 'privacy/index.html',
+    title: 'Privacy Policy | Christians in Politics Australia',
+    description:
+      'How Christians in Politics Australia collects, uses, stores and protects your personal information, including sensitive information such as party affiliation and church tradition.',
+  },
+  {
+    path: '/terms',
+    out: 'terms/index.html',
+    title: 'Terms of Service | Christians in Politics Australia',
+    description:
+      'The terms on which you use the CiP Network — eligibility, account responsibilities, how we expect members to behave, content ownership and moderation.',
+  },
+  // Any path the router doesn't recognise renders NotFound, so this writes the
+  // 404 page Vercel serves (with a real 404 status) for unmatched URLs.
+  {
+    path: '/__not-found',
+    out: '404.html',
+    title: 'Page not found | Christians in Politics Australia',
+    description: 'The page you were looking for could not be found.',
+    noindex: true,
+  },
+  {
     path: '/donate',
     out: 'donate/index.html',
     title: 'Support Our Work | Christians in Politics Australia',
@@ -135,7 +158,7 @@ const ROUTES = [
 
 // Runs inside the page. Rewrites the SEO-relevant tags to this route's values
 // so each prerendered file has a unique title/description/canonical.
-function applyMeta({ title, description, canonical }) {
+function applyMeta({ title, description, canonical, noindex }) {
   document.title = title
 
   const set = (selector, attr, value) => {
@@ -143,6 +166,7 @@ function applyMeta({ title, description, canonical }) {
     if (el) el.setAttribute(attr, value)
   }
 
+  if (noindex) set('meta[name="robots"]', 'content', 'noindex, follow')
   set('meta[name="description"]', 'content', description)
   set('meta[property="og:title"]', 'content', title)
   set('meta[property="og:description"]', 'content', description)
@@ -160,7 +184,7 @@ function applyMeta({ title, description, canonical }) {
 // rendered React content into the HTML, so crawlers that don't execute JS see
 // an empty shell. Strictly worse than a real prerender, strictly better than
 // nine pages sharing the homepage's title.
-function rewriteMeta(html, { title, description, canonical }) {
+function rewriteMeta(html, { title, description, canonical, noindex }) {
   const esc = (s) =>
     String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
@@ -178,6 +202,7 @@ function rewriteMeta(html, { title, description, canonical }) {
     if (before.test(out)) out = out.replace(before, `$1${esc(value)}$2`)
   }
 
+  if (noindex) setMeta('name', 'robots', 'noindex, follow')
   setMeta('name', 'description', description)
   setMeta('property', 'og:title', title)
   setMeta('property', 'og:description', description)
@@ -195,7 +220,12 @@ async function metaOnlyFallback() {
   const shell = await readFile(resolve(DIST, 'index.html'), 'utf8')
   for (const route of ROUTES) {
     const canonical = route.path === '/' ? `${ORIGIN}/` : `${ORIGIN}${route.path}`
-    const html = rewriteMeta(shell, { title: route.title, description: route.description, canonical })
+    const html = rewriteMeta(shell, {
+      title: route.title,
+      description: route.description,
+      canonical,
+      noindex: route.noindex,
+    })
     const outPath = resolve(DIST, route.out)
     await mkdir(dirname(outPath), { recursive: true })
     await writeFile(outPath, html, 'utf8')
@@ -203,7 +233,34 @@ async function metaOnlyFallback() {
   }
 }
 
+// vercel.json no longer has a catch-all rewrite — Vercel serves these files
+// straight off the filesystem so unmatched URLs can return a real 404. That
+// makes ROUTES load-bearing: a router path with no entry here would 404 in
+// production. Fail the build rather than find out from a member.
+async function assertRoutesCovered() {
+  const routesFile = resolve(__dirname, '..', 'src', 'app', 'routes.tsx')
+  if (!existsSync(routesFile)) return
+  const src = await readFile(routesFile, 'utf8')
+
+  const declared = new Set()
+  for (const m of src.matchAll(/path:\s*"([^"]*)"/g)) {
+    const p = m[1]
+    if (p === '*' || p === '/') continue
+    declared.add('/' + p.replace(/^\//, ''))
+  }
+  const covered = new Set(ROUTES.map((r) => r.path))
+  const missing = [...declared].filter((p) => !covered.has(p))
+
+  if (missing.length) {
+    throw new Error(
+      `Routes declared in routes.tsx but missing from prerender ROUTES: ${missing.join(', ')}\n` +
+        `Without an entry they have no HTML file and will 404 in production.`
+    )
+  }
+}
+
 async function run() {
+  await assertRoutesCovered()
   const CHROME = await findChrome()
   if (!CHROME) {
     console.warn('\n⚠  No Chrome/Chromium found — falling back to meta-only prerender.\n')
@@ -249,6 +306,7 @@ async function run() {
         title: route.title,
         description: route.description,
         canonical,
+        noindex: route.noindex,
       })
 
       const html = '<!DOCTYPE html>\n' + (await page.evaluate(() => document.documentElement.outerHTML))
