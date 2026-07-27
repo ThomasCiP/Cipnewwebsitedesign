@@ -9,6 +9,7 @@ import Resources from "./pages/Resources";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Donate from "./pages/Donate";
+import Support from "./pages/Support";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
       { path: "about", Component: About },
       { path: "contact", Component: Contact },
       { path: "donate", Component: Donate },
+      { path: "support", Component: Support },
       { path: "*", Component: Home },
     ],
   },

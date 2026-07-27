@@ -58,6 +58,7 @@ export function Footer() {
               <li><Link to="/about" className="text-sm text-charcoal-600 hover:text-copper-600">About Us</Link></li>
               <li><Link to="/partners" className="text-sm text-charcoal-600 hover:text-copper-600">Partners</Link></li>
               <li><Link to="/contact" className="text-sm text-charcoal-600 hover:text-copper-600">Contact</Link></li>
+              <li><Link to="/support" className="text-sm text-charcoal-600 hover:text-copper-600">Support</Link></li>
               <li><Link to="/donate" className="text-sm text-charcoal-600 hover:text-copper-600">Donate</Link></li>
             </ul>
           </div>

@@ -118,6 +118,13 @@ const ROUTES = [
       'Get in touch with Christians in Politics — ask a question or invite us to speak at your church. We would love to hear from you.',
   },
   {
+    path: '/support',
+    out: 'support/index.html',
+    title: 'Support | Christians in Politics Australia',
+    description:
+      'Help with the CiP Network app and member portal — signing in, confirmation emails, resetting your password, deleting your account, reporting content and privacy settings.',
+  },
+  {
     path: '/donate',
     out: 'donate/index.html',
     title: 'Support Our Work | Christians in Politics Australia',
