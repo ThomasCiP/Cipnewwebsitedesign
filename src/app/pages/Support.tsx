@@ -10,7 +10,7 @@ import {
   Smartphone,
 } from "lucide-react";
 
-const SUPPORT_EMAIL = "hello@cip.org.au";
+const SUPPORT_EMAIL = "contact@christiansinpolitics.com";
 const PORTAL = "https://network.christiansinpolitics.com";
 
 type Topic = {

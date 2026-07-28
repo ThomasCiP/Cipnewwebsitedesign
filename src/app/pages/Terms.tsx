@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { LegalPage, H2, P, UL, LI } from "../components/LegalPage";
 
-const EMAIL = "hello@cip.org.au";
+const EMAIL = "contact@christiansinpolitics.com";
 
 export default function Terms() {
   return (
