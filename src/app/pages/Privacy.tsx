@@ -8,7 +8,7 @@ export default function Privacy() {
     <LegalPage
       title="Privacy Policy"
       intro="How Christians in Politics Australia collects, uses and protects your personal information."
-      updated="27 July 2026"
+      updated="31 July 2026"
     >
       <H2>Who we are</H2>
       <P>
@@ -29,8 +29,8 @@ export default function Privacy() {
       <H2>Sensitive information</H2>
       <P>
         Two things you can record on your profile are treated as <strong>sensitive information</strong>{" "}
-        under Australian privacy law: your <strong>political party affiliation</strong> and your{" "}
-        <strong>church tradition or denomination</strong>.
+        under Australian privacy law: your <strong>political party affiliation</strong>, your{" "}
+        <strong>church tradition or denomination</strong>, and the <strong>church you attend</strong>.
       </P>
       <P>
         Both are entirely optional. We collect them only with your consent, which you give by
@@ -43,12 +43,12 @@ export default function Privacy() {
       <P>When you create an account and use the network, we collect:</P>
       <UL>
         <LI>
-          <strong>Account details</strong> — your email address and password. Passwords are hashed by
-          our authentication provider; we never see them.
+          <strong>Account details</strong> — your email address, an optional mobile number, and your
+          password. Passwords are hashed by our authentication provider; we never see them.
         </LI>
         <LI>
-          <strong>Profile</strong> — first and last name, profile photo, job title, biography, state,
-          and federal and state electorate.
+          <strong>Profile</strong> — first and last name, profile photo, job title, employer,
+          biography, state, and federal and state electorate.
         </LI>
         <LI>
           <strong>Sensitive information (optional)</strong> — political party and church tradition,
@@ -66,7 +66,8 @@ export default function Privacy() {
           memberships.
         </LI>
         <LI>
-          <strong>Preferences</strong> — your notification and privacy settings.
+          <strong>Preferences</strong> — your notification and privacy settings, and a device push
+          token if you turn on push notifications.
         </LI>
         <LI>
           <strong>Support and reports</strong> — support requests you raise, and reports you make
@@ -87,7 +88,11 @@ export default function Privacy() {
           reminders and notifications you have opted into.
         </LI>
         <LI>To respond to your support requests.</LI>
-        <LI>To moderate content that is reported, and to keep the network safe.</LI>
+        <LI>
+          To moderate content and keep the network safe: reported content is reviewed by CiP
+          moderators, assisted by automated monitoring of posts and comments for conduct that may
+          breach the Member Conduct Agreement. We do not use your information to train AI models.
+        </LI>
       </UL>
 
       <H2>Who can see your information</H2>
@@ -102,6 +107,10 @@ export default function Privacy() {
           used to determine eligibility for tradition-restricted groups.
         </LI>
         <LI>Direct messages are visible only to you and the member you are messaging.</LI>
+        <LI>
+          You can block any member: blocked members cannot message you or send you connection
+          requests, and you will not see each other's content.
+        </LI>
         <LI>
           Posts in a group are visible to that group's members; posts in the main feed are visible to
           all members.
@@ -212,8 +221,9 @@ export default function Privacy() {
         Questions about this policy, or about your information, go to{" "}
         <a href={`mailto:${EMAIL}`} className="text-copper-700 underline font-semibold">
           {EMAIL}
-        </a>
-        . For help using the network, see our{" "}
+        </a>{" "}
+        or by post to Christians in Politics Australia Ltd, PO Box South Hurstville, NSW 2221,
+        Australia. For help using the network, see our{" "}
         <Link to="/support" className="text-copper-700 underline font-semibold">
           support page
         </Link>
