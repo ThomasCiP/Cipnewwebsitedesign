@@ -1,0 +1,908 @@
+<title>Light Spring Fitting Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --ground:#F3F5F1;
+  --surface:#FFFFFF;
+  --surface-2:#EDF0EA;
+  --ink:#26332C;
+  --ink-2:#4A5A50;
+  --muted:#6B7A70;
+  --line:#D8DED5;
+  --line-soft:#E6EAE2;
+  --jade:#2F7D6E;
+  --jade-soft:#DCEBE5;
+  --coral:#C75F42;
+  --coral-soft:#F7E4DD;
+  --oyster:#E4DACB;
+  --good:#2F7D6E;
+  --ok:#B07D2B;
+  --poor:#B04A38;
+  --good-bg:#DCEBE5;
+  --ok-bg:#F6EAD2;
+  --poor-bg:#F7E0DB;
+  --shadow:0 1px 2px rgba(38,51,44,.05), 0 8px 24px -12px rgba(38,51,44,.18);
+  --radius:10px;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151B17;
+    --surface:#1D251F;
+    --surface-2:#242D26;
+    --ink:#E7EDE5;
+    --ink-2:#B9C4BB;
+    --muted:#8C9A90;
+    --line:#334036;
+    --line-soft:#2A342C;
+    --jade:#63BCA6;
+    --jade-soft:#1E332D;
+    --coral:#EE9A80;
+    --coral-soft:#33241F;
+    --oyster:#5A5145;
+    --good:#63BCA6;
+    --ok:#D9AE63;
+    --poor:#E38A76;
+    --good-bg:#1E332D;
+    --ok-bg:#332C1C;
+    --poor-bg:#33221E;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151B17;
+  --surface:#1D251F;
+  --surface-2:#242D26;
+  --ink:#E7EDE5;
+  --ink-2:#B9C4BB;
+  --muted:#8C9A90;
+  --line:#334036;
+  --line-soft:#2A342C;
+  --jade:#63BCA6;
+  --jade-soft:#1E332D;
+  --coral:#EE9A80;
+  --coral-soft:#33241F;
+  --oyster:#5A5145;
+  --good:#63BCA6;
+  --ok:#D9AE63;
+  --poor:#E38A76;
+  --good-bg:#1E332D;
+  --ok-bg:#332C1C;
+  --poor-bg:#33221E;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:0}
+
+/* ---------- type ---------- */
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2.1rem,5.5vw,3.3rem);letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,3.4vw,2.05rem);letter-spacing:-.015em}
+h3{font-size:1.12rem;letter-spacing:-.01em}
+h4{font-family:var(--body);font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.11em;color:var(--muted)}
+p{margin:0}
+a{color:var(--jade)}
+.lede{font-size:1.06rem;color:var(--ink-2);max-width:62ch}
+.small{font-size:.875rem;color:var(--muted)}
+.mono{font-family:var(--mono);font-size:.82em;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+
+/* ---------- masthead ---------- */
+.masthead{padding-block:clamp(36px,7vw,64px) 28px}
+.eyebrow{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--coral);margin-bottom:14px}
+.masthead h1 em{font-style:italic;color:var(--jade)}
+.masthead .lede{margin-top:16px}
+
+.profile{
+  margin-top:28px;display:grid;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+}
+.profile div{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.profile dt{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.11em;color:var(--muted)}
+.profile dd{margin:0;font-size:.95rem;font-weight:500}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ground) 88%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft);margin-top:34px;
+}
+.nav-inner{max-width:1080px;margin:0 auto;padding-inline:20px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav a{
+  flex:0 0 auto;padding:13px 12px;font-size:.83rem;font-weight:600;color:var(--muted);
+  text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;
+}
+.nav a:hover{color:var(--ink)}
+
+section{padding-block:clamp(40px,6vw,64px);border-top:1px solid var(--line-soft);scroll-margin-top:54px}
+section:first-of-type{border-top:0}
+.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+
+/* ---------- fitting room ---------- */
+.room{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px;align-items:start}
+@media (max-width:820px){.room{grid-template-columns:minmax(0,1fr)}}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.panel + .panel{margin-top:18px}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+
+.modes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.mode{
+  font-family:var(--body);font-size:.84rem;font-weight:600;padding:8px 13px;cursor:pointer;
+  background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);border-radius:999px;
+}
+.mode[aria-pressed="true"]{background:var(--jade);border-color:var(--jade);color:#fff}
+.mode:focus-visible,.btn:focus-visible,.nav a:focus-visible,.drop:focus-visible,.chip:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+
+.drop{
+  border:1.5px dashed var(--line);border-radius:var(--radius);background:var(--surface-2);
+  padding:24px 18px;text-align:center;cursor:pointer;display:block;width:100%;
+  color:var(--ink-2);font-family:var(--body);font-size:.9rem;transition:border-color .15s,background .15s;
+}
+.drop:hover,.drop.over{border-color:var(--jade);background:var(--jade-soft)}
+.drop strong{display:block;font-size:.98rem;color:var(--ink);margin-bottom:4px}
+
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.thumb{position:relative;width:66px;height:88px;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:var(--surface-2)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb button{
+  position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;border:0;cursor:pointer;
+  background:rgba(20,26,22,.72);color:#fff;font-size:13px;line-height:1;display:grid;place-items:center;padding:0;
+}
+
+.btn{
+  font-family:var(--body);font-size:.92rem;font-weight:600;padding:11px 18px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--jade);background:var(--jade);color:#fff;
+}
+.btn:hover{filter:brightness(1.06)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:none}
+.btn.ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+.btn.ghost:hover{background:var(--surface-2);filter:none}
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+
+textarea{
+  width:100%;font-family:var(--body);font-size:.9rem;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line);border-radius:8px;padding:10px 12px;resize:vertical;min-height:62px;margin-top:12px;
+}
+textarea::placeholder{color:var(--muted)}
+
+/* ---------- verdict ---------- */
+.verdict{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);overflow:hidden;box-shadow:var(--shadow)}
+.verdict-top{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-bottom:1px solid var(--line-soft)}
+.verdict-top.yes{background:var(--good-bg)}
+.verdict-top.tweak{background:var(--ok-bg)}
+.verdict-top.no{background:var(--poor-bg)}
+.stamp{
+  flex:0 0 auto;font-family:var(--display);font-size:1.02rem;font-weight:700;padding:5px 12px;border-radius:999px;
+  border:1.5px solid currentColor;white-space:nowrap;
+}
+.stamp.yes{color:var(--good)} .stamp.tweak{color:var(--ok)} .stamp.no{color:var(--poor)}
+.verdict-top p{font-size:1rem;font-weight:500;margin-top:3px}
+.axes{display:grid;gap:1px;background:var(--line-soft)}
+.axis{background:var(--surface);padding:13px 20px;display:grid;grid-template-columns:98px 1fr;gap:14px;align-items:start}
+@media (max-width:520px){.axis{grid-template-columns:1fr;gap:4px}}
+.axis-name{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding-top:2px}
+.axis-note{font-size:.92rem;color:var(--ink-2)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.dot.good{background:var(--good)} .dot.ok{background:var(--ok)} .dot.poor{background:var(--poor)}
+.verdict-foot{padding:16px 20px;display:grid;gap:14px;border-top:1px solid var(--line-soft)}
+.verdict ul{margin:6px 0 0;padding-left:18px;display:grid;gap:5px;font-size:.92rem;color:var(--ink-2)}
+.hexrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.hexchip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:4px 11px 4px 5px;font-size:.78rem}
+.hexchip span.sw{width:18px;height:18px;border-radius:50%;border:1px solid rgba(0,0,0,.12);display:block}
+
+.ex-label{display:flex;align-items:center;gap:9px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);margin-bottom:9px}
+.ex-label::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+.status{font-size:.88rem;color:var(--muted);display:flex;align-items:center;gap:9px;min-height:22px}
+.spin{width:13px;height:13px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--jade);animation:sp .8s linear infinite;flex:0 0 auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}*{scroll-behavior:auto!important}}
+
+.saved{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:14px;margin-top:6px}
+.card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface);display:flex;flex-direction:column}
+.card figure{margin:0;aspect-ratio:3/4;background:var(--surface-2);overflow:hidden}
+.card figure img{width:100%;height:100%;object-fit:cover;display:block}
+.card .card-body{padding:10px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.chip{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:3px 8px;border-radius:999px;align-self:flex-start;border:0;font-family:var(--body)}
+.chip.yes{background:var(--good-bg);color:var(--good)}
+.chip.tweak{background:var(--ok-bg);color:var(--ok)}
+.chip.no{background:var(--poor-bg);color:var(--poor)}
+.chip.example{background:var(--surface-2);color:var(--muted)}
+.card p{font-size:.84rem;color:var(--ink-2);line-height:1.4}
+
+/* ---------- palette ---------- */
+.pal-group{margin-bottom:34px}
+.pal-group:last-child{margin-bottom:0}
+.pal-head{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin-bottom:6px}
+.pal-head h3{font-size:1.18rem}
+.pal-role{font-size:.76rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--coral)}
+.pal-group > p{margin-bottom:14px;max-width:64ch;color:var(--ink-2);font-size:.94rem}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
+.sw-card{border:1px solid var(--line-soft);border-radius:8px;overflow:hidden;background:var(--surface)}
+.sw-card .fill{height:58px}
+.sw-card .meta{padding:8px 10px}
+.sw-card .nm{font-size:.84rem;font-weight:600;line-height:1.3}
+.sw-card .hx{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:2px}
+
+.avoid{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.avoid li{
+  list-style:none;font-size:.85rem;padding:6px 12px;border-radius:999px;
+  background:var(--poor-bg);color:var(--poor);font-weight:500;
+}
+
+/* ---------- formulas ---------- */
+.formulas{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.formula{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:9px}
+.formula h3{font-size:1.05rem}
+.formula p{font-size:.92rem;color:var(--ink-2)}
+.ratio{display:flex;height:9px;border-radius:999px;overflow:hidden;border:1px solid var(--line-soft)}
+.ratio i{display:block;height:100%}
+.recipe{font-size:.88rem;color:var(--ink-2);border-left:2px solid var(--coral);padding-left:11px;margin-top:2px}
+.recipe b{color:var(--ink);font-weight:600}
+
+/* ---------- do / avoid tables ---------- */
+.rules{display:grid;gap:18px}
+.rule{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden}
+.rule > h3{padding:14px 18px 12px;border-bottom:1px solid var(--line-soft);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rule > h3 .why{font-family:var(--body);font-size:.8rem;font-weight:500;color:var(--muted);letter-spacing:0;text-transform:none}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft)}
+@media (max-width:640px){.cols{grid-template-columns:1fr}}
+.col{background:var(--surface);padding:15px 18px}
+.col h4{margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.col.yes h4{color:var(--good)} .col.no h4{color:var(--poor)}
+.col ul{margin:0;padding-left:17px;display:grid;gap:6px;font-size:.91rem;color:var(--ink-2)}
+.col ul li::marker{color:var(--line)}
+
+.numbers{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;margin-top:18px}
+.num{background:var(--surface);padding:15px 16px}
+.num .v{font-family:var(--mono);font-size:1.28rem;font-weight:500;color:var(--jade);font-variant-numeric:tabular-nums}
+.num .k{font-size:.82rem;color:var(--ink-2);margin-top:3px;line-height:1.35}
+
+.checklist{counter-reset:c;display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;list-style:none;padding:0;margin:0}
+.checklist li{background:var(--surface);padding:14px 18px 14px 52px;position:relative;counter-increment:c;font-size:.95rem;color:var(--ink-2)}
+.checklist li::before{
+  content:counter(c);position:absolute;left:18px;top:14px;width:22px;height:22px;border-radius:50%;
+  background:var(--jade-soft);color:var(--jade);font-family:var(--mono);font-size:.72rem;display:grid;place-items:center;font-weight:500;
+}
+.checklist li b{color:var(--ink);font-weight:600}
+
+footer{border-top:1px solid var(--line-soft);padding-block:32px 44px;color:var(--muted);font-size:.86rem;display:grid;gap:6px}
+.note{background:var(--coral-soft);border-left:3px solid var(--coral);border-radius:0 8px 8px 0;padding:14px 16px;font-size:.92rem;color:var(--ink-2);max-width:66ch;margin-top:18px}
+.note b{color:var(--ink)}
+[hidden]{display:none!important}
+</style>
+
+<div class="wrap masthead">
+  <p class="eyebrow">Personal style guide &amp; fitting room</p>
+  <h1>Light, clear, <em>vertical</em>.</h1>
+  <p class="lede">Everything here is built around one colouring and one set of proportions. The rule that decides most outfits: <b>colour and interest live above the waist; below it, one uninterrupted matte line to the floor.</b></p>
+
+  <dl class="profile">
+    <div><dt>Height &amp; weight</dt><dd class="mono">170 cm · 74 kg</dd></div>
+    <div><dt>Size</dt><dd class="mono">12 (AU/UK) bottoms</dd></div>
+    <div><dt>Season</dt><dd>Light Spring, cool edge</dd></div>
+    <div><dt>Hair</dt><dd>Auburn brown</dd></div>
+    <div><dt>Eyes</dt><dd>Green / blue</dd></div>
+    <div><dt>Skin</dt><dd>Mild warm tan</dd></div>
+  </dl>
+
+  <div class="note">
+    <b>On the season.</b> Auburn hair and a warm tan are Spring signals; a preference for cool, soft colour is a Summer signal. She sits on the border — <b>Light Spring at its coolest edge</b>. Practically: keep her colours <i>light and clear</i> like Spring, but pull the saturation back a notch and lean to the blue-green half of the wheel. Anything hot, deep or dusty is the wrong direction.
+  </div>
+</div>
+
+<nav class="nav" aria-label="Sections">
+  <div class="nav-inner">
+    <a href="#fitting">Fitting room</a>
+    <a href="#palette">Palette</a>
+    <a href="#pairing">Pairing formulas</a>
+    <a href="#shape">Shape rules</a>
+    <a href="#legs">Legs &amp; shoes</a>
+    <a href="#test">The 6-point test</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ================= FITTING ROOM ================= -->
+<section id="fitting">
+  <div class="sec-head">
+    <h2>Fitting room</h2>
+    <p class="lede">Add a photo of her once — it stays as the reference. Then drop in any garment, outfit or shop screenshot and get a verdict measured against the whole guide below.</p>
+  </div>
+
+  <div id="noSample" class="note" hidden>
+    <b>Verdicts are off in this view.</b> The guide below works everywhere, but the photo check needs the page opened from claude.ai (or the Claude app) while signed in.
+  </div>
+
+  <div class="room">
+    <div>
+      <div class="panel">
+        <div class="panel-head"><h3>1 · Her reference photos</h3><span class="small mono" id="refCount">0</span></div>
+        <p class="small">A clear, natural-light photo of her face and one full-length shot. These are sent with every check so colour and proportion are judged on her, not in the abstract.</p>
+        <button type="button" class="drop" id="refDrop" aria-describedby="refHelp">
+          <strong>Add her photos</strong>
+          <span id="refHelp">Click, or drop images here</span>
+        </button>
+        <input type="file" id="refInput" accept="image/*" multiple hidden>
+        <div class="thumbs" id="refThumbs"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h3>2 · What are we looking at?</h3></div>
+        <div class="modes" id="modes" role="group" aria-label="Check type">
+          <button type="button" class="mode" data-mode="garment" aria-pressed="true">Single garment</button>
+          <button type="button" class="mode" data-mode="outfit" aria-pressed="false">Full look on her</button>
+          <button type="button" class="mode" data-mode="pair" aria-pressed="false">What to wear it with</button>
+          <button type="button" class="mode" data-mode="compare" aria-pressed="false">Pick between these</button>
+        </div>
+        <button type="button" class="drop" id="itemDrop">
+          <strong>Add the clothes</strong>
+          <span>Product shot, shop screenshot, or a photo of her wearing it</span>
+        </button>
+        <input type="file" id="itemInput" accept="image/*" multiple hidden>
+        <div class="thumbs" id="itemThumbs"></div>
+        <label class="small" for="ctx" style="display:block;margin-top:14px;font-weight:600;color:var(--ink)">Anything I should know? <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+        <textarea id="ctx" placeholder="e.g. Church on Sunday, standing outside afterwards. It's a size 12, viscose twill, $89."></textarea>
+        <div class="btn-row">
+          <button type="button" class="btn" id="go">Get the verdict</button>
+          <button type="button" class="btn ghost" id="stop" hidden>Stop</button>
+        </div>
+        <div class="status" id="status"></div>
+      </div>
+    </div>
+
+    <div>
+      <div id="verdictSlot"></div>
+      <div class="panel" id="savedPanel">
+        <div class="panel-head"><h3>Saved verdicts</h3><span class="small" id="savedCount"></span></div>
+        <div class="saved" id="saved"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PALETTE ================= -->
+<section id="palette">
+  <div class="sec-head">
+    <h2>Her palette</h2>
+    <p class="lede">Four jobs, four groups. Neutrals carry the outfit, heroes sit near the face, anchors hold the bottom half, and the avoid list is the one that saves the most money.</p>
+  </div>
+  <div id="palGroups"></div>
+
+  <div class="note">
+    <b>Metals:</b> light gold, rose gold and bronze sit with auburn hair and a warm tan. Brushed or matte silver is fine; high-polish chrome and gunmetal go grey against her. <b>Denim:</b> mid and light blue with a clean, warm wash — not black, not inky raw indigo.
+  </div>
+</section>
+
+<!-- ================= PAIRING ================= -->
+<section id="pairing">
+  <div class="sec-head">
+    <h2>How to pair the colours</h2>
+    <p class="lede">Six formulas. Each one is a repeatable structure, not a single outfit — learn these and most of the wardrobe combines itself.</p>
+  </div>
+  <div class="formulas" id="formulas"></div>
+
+  <div class="note" style="margin-top:26px">
+    <b>The one hard rule:</b> keep the lightness gap moderate. Her colours are light and clear, so a light-clear colour next to a deep-muted one (coral with charcoal, apricot with black) makes the dark half look like a hole and drains her face. If you want contrast, get it from <i>hue</i> — coral against aqua — not from light against near-black.
+  </div>
+</section>
+
+<!-- ================= SHAPE ================= -->
+<section id="shape">
+  <div class="sec-head">
+    <h2>Shape rules</h2>
+    <p class="lede">Fuller thighs and ankles with a conservative brief point to the same answer, which is convenient: longer, straighter, matte below the waist, and everything interesting up top. The goal is never to hide the leg — it is to stop cutting it into pieces.</p>
+  </div>
+  <div class="rules" id="rules"></div>
+
+  <div class="numbers" id="numbers"></div>
+  <p class="small" style="margin-top:10px">Measured on a 170 cm frame, from the natural waist unless stated.</p>
+</section>
+
+<!-- ================= LEGS ================= -->
+<section id="legs">
+  <div class="sec-head">
+    <h2>Legs, ankles and shoes</h2>
+    <p class="lede">This is where the most damage gets done, and it is almost entirely about horizontal lines. Every strap, cuff, buckle or colour change at the ankle acts like a full stop — the eye reads the leg as ending there and being as wide as the widest thing it can see.</p>
+  </div>
+  <div class="rules" id="legRules"></div>
+  <div class="note">
+    <b>The shoe colour trick.</b> A shoe close to her own skin tone reads as more leg. For a mild warm tan that is a soft camel-beige around <span class="mono">#D6B79A</span> — not pink-beige, not grey-beige. The alternative that works just as well: match the shoe to the trouser or the tights so the column runs unbroken from waist to floor.
+  </div>
+</section>
+
+<!-- ================= TEST ================= -->
+<section id="test">
+  <div class="sec-head">
+    <h2>The 6-point test</h2>
+    <p class="lede">The rubric the fitting room scores against, and a quick check to run in a changing room. Four or more passes and it's a yes; a fail on 3 or 5 is almost always a no regardless of the rest.</p>
+  </div>
+  <ol class="checklist" id="checklist"></ol>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p>A personal style guide. Colours are calibrated to Light Spring at its cool edge; measurements to 170 cm.</p>
+  <p>Verdicts are generated by Claude against the rules on this page and cost the viewer's own Claude usage. Mirrors and honest friends still beat both.</p>
+</footer>
+
+<script>
+/* =====================================================================
+   THE GUIDE — one source of truth. The page renders from it, and the
+   fitting-room prompt is built from it, so the two can never drift.
+   ===================================================================== */
+
+const PALETTE = [
+  {
+    name: "Neutrals", role: "The base — trousers, skirts, coats, shoes",
+    blurb: "Her whole wardrobe foundation. Warm-light and soft rather than corporate dark. Soft navy does every job black would do, without the drain.",
+    colors: [
+      {hex:"#F6F0E4", name:"Ivory"},
+      {hex:"#E4DACB", name:"Oyster"},
+      {hex:"#D9BA8E", name:"Soft honey"},
+      {hex:"#C3B4A4", name:"Warm taupe"},
+      {hex:"#8A9187", name:"Pewter sage"},
+      {hex:"#7A6A57", name:"Bronze taupe"},
+      {hex:"#3E4A63", name:"Soft navy"}
+    ]
+  },
+  {
+    name: "Heroes", role: "Near the face — tops, knits, scarves, dresses",
+    blurb: "The light, clear colours that light her up. These belong above the waist where they do the most work. Two of them together is a finished outfit.",
+    colors: [
+      {hex:"#F0907A", name:"Soft coral"},
+      {hex:"#68C2BE", name:"Warm aqua"},
+      {hex:"#93A9DD", name:"Periwinkle"},
+      {hex:"#F7B98A", name:"Clear apricot"},
+      {hex:"#7FBE9C", name:"Light jade"},
+      {hex:"#F2A6A8", name:"Rose petal"},
+      {hex:"#F5DD9A", name:"Butter"}
+    ]
+  },
+  {
+    name: "Anchors", role: "Weight below the waist — bottoms, outerwear",
+    blurb: "When she wants something deeper, these are the depths that hold. They are saturated but never heavy, so the value gap to a hero colour stays civil.",
+    colors: [
+      {hex:"#2F7D6E", name:"Teal"},
+      {hex:"#5B7BA5", name:"Denim blue"},
+      {hex:"#4E8C7D", name:"Spruce"},
+      {hex:"#8E6E86", name:"Soft plum"},
+      {hex:"#B4654C", name:"Terracotta"}
+    ]
+  }
+];
+
+const AVOID = ["Pure black","Charcoal","Optic white","Burgundy / oxblood","Espresso brown","Mustard","Magenta / fuchsia","Neons","Icy pastels","Dusty mauve"];
+
+const FORMULAS = [
+  {
+    title: "Light above, deeper below",
+    ratio: [["#3E4A63",55],["#F6F0E4",25],["#F0907A",20]],
+    body: "The default. A deeper neutral on the bottom half, a hero colour at the neck, a light neutral layer between. It solves colour and proportion in one move.",
+    recipe: "<b>Soft navy wide-leg trousers</b> + soft coral shell + ivory blazer + camel pointed flats."
+  },
+  {
+    title: "The tone ladder",
+    ratio: [["#F6F0E4",34],["#E4DACB",33],["#D9BA8E",33]],
+    body: "One hue, three depths, lightest at the top. No colour break anywhere means no horizontal line anywhere — the single most lengthening thing she can wear.",
+    recipe: "<b>Soft honey midi skirt</b> + oyster fine knit + ivory long cardigan + honey boots under the hem."
+  },
+  {
+    title: "60 / 30 / 10",
+    ratio: [["#8A9187",60],["#F6F0E4",30],["#F0907A",10]],
+    body: "Sixty per cent one neutral, thirty per cent a second, ten per cent a hero — and the ten per cent is a scarf, a bag or earrings. The cheapest way to make a plain outfit look decided.",
+    recipe: "<b>Pewter sage trousers and jacket</b> + ivory shirt + soft coral silk scarf."
+  },
+  {
+    title: "Two heroes, one neutral",
+    ratio: [["#68C2BE",40],["#F0907A",25],["#F6F0E4",35]],
+    body: "Her heroes are all the same lightness, so any two sit together as equals instead of one shouting. Join them with ivory or oyster and it reads considered, not loud.",
+    recipe: "<b>Warm aqua knit</b> + ivory A-line midi + soft coral flats and bag."
+  },
+  {
+    title: "Print, contained",
+    ratio: [["#F6F0E4",50],["#68C2BE",22],["#F0907A",16],["#F5DD9A",12]],
+    body: "Prints only above the waist, on a light ground, with small-to-medium motifs. A print below the waist widens exactly where it falls — and a big print across the thigh is the worst version of that.",
+    recipe: "<b>Ivory blouse with a small aqua and coral floral</b> + plain teal midi skirt."
+  },
+  {
+    title: "Texture instead of contrast",
+    ratio: [["#E4DACB",45],["#D9BA8E",30],["#7A6A57",25]],
+    body: "When she wants quiet, get the interest from surface — cable, bouclé, jacquard, a crisp poplin — not from a dark colour. Texture above the waist, smooth and matte below, always.",
+    recipe: "<b>Oyster cable knit</b> + soft honey crepe wide-leg + bronze taupe belt and loafers."
+  }
+];
+
+const RULES = [
+  {
+    title: "Trousers", why: "Her strongest category — one vertical from waist to floor covers thigh and ankle at once",
+    yes: ["Full-length straight leg or wide leg, hemmed to the top of the shoe","A front crease — it draws a literal vertical line down the leg","High or mid-rise, flat front, no pleats bunching at the hip","Side or back zip rather than a bulky fly","Matte crepe, wool suiting, ponte, viscose twill","Trouser and shoe in the same tone"],
+    no: ["Cropped or ankle-grazer lengths that stop at the calf","Skinny and tapered legs","Leggings worn as trousers","Turn-ups and cuffs — a horizontal line at the ankle","Stiff, thick denim that holds the thigh shape","Light-coloured trousers with a dark shoe"]
+  },
+  {
+    title: "Skirts", why: "Length is doing all the work: land the hem where the leg is narrow",
+    yes: ["A-line midi — the single best skirt shape for her","Soft knife pleats: vertical lines that move","Bias-cut midi, fully lined so it skims and doesn't cling","Panelled or gored skirts — seams read as vertical","Deep-overlap wrap skirts","Hem at mid-calf, the ankle bone, or the floor"],
+    no: ["Hems that stop at the widest part of the calf","Pencil skirts ending mid-calf","Gathered dirndl waists that add bulk across the hip","Tiered skirts — stacked horizontals over the thigh","Stiff circle skirts with a thick waistband","Anything above the knee"]
+  },
+  {
+    title: "Shorts", why: "Conservative and flattering land on the same answer: longer and tailored",
+    yes: ["Bermuda, 18–23 cm inseam, hem just above the knee","Tailored and flat-fronted, cut straight from the thigh","Culotte shorts and city shorts","Matte linen blend, cotton twill, crepe","Worn with a tucked top and a belt to mark the waist"],
+    no: ["Anything under 15 cm inseam","Turn-ups — they cut straight across the widest thigh","Denim cut-offs and stretch-fitted shorts","Elasticated gathered waists","Big patch pockets on the hip"]
+  },
+  {
+    title: "Dresses", why: "Waist definition plus an A-line skirt is the reliable formula",
+    yes: ["Wrap dress, midi length","Shirt dress, midi, belted at the natural waist","Fit-and-flare with a real waist seam","Column dress with vertical princess seams","3/4 or elbow sleeves — they pull the eye up","V, soft scoop, boat or collared necklines"],
+    no: ["Bodycon and anything clingy over the hip","Tiered ruffle skirts","Drop-waist and shift dresses that end above the knee","Bandage knits and thin stretch jersey","Shiny satin across the hip","Above-the-knee lengths"]
+  },
+  {
+    title: "Tops and layers", why: "This is where the colour, texture and attention belong",
+    yes: ["Ending at the hip bone, or tucked / half-tucked","Set-in and softly structured shoulders","Boat necks, statement collars, modest V necks","Texture: cable, bouclé, jacquard, crisp poplin","Long cardigans and open blazers — two more verticals","Longline jackets that finish below the widest hip"],
+    no: ["Tops ending exactly at the widest part of the hip","Cropped hems worn untucked","Bulky ribbed knits that stop at the hip","Boxy tops with no waist reference at all","Deep V or low scoop — off-brief for her"]
+  }
+];
+
+const LEG_RULES = [
+  {
+    title: "Shoes", why: "Nothing horizontal at the ankle, and as much instep on show as decency allows",
+    yes: ["Pointed or almond toe","Low-cut vamp — more instep visible reads as more leg","Block heel 4–6 cm, or a wedge","Pointed flats and loafers in a warm nude","Shoe matched to trouser, tights or skin","V-cut throat on a flat"],
+    no: ["Ankle straps of any width","T-bars and mary-janes","Gladiator and wrap-around lacing","Chunky ankle boots with a contrast cuff or collar","Round-toe ballet flats with a high vamp","Dark shoes under a light hem"]
+  },
+  {
+    title: "Boots and hosiery", why: "Boots are fine — the shaft just has to disappear under the hem or over the knee",
+    yes: ["Knee-high or over-the-knee boots under a midi","Ankle boots in the exact colour of the trouser or tights","A stretch or wide shaft that doesn't grip the calf","Opaque matte tights matching the skirt or the shoe","Riding-boot shapes with a clean, low heel"],
+    no: ["Ankle boots with a bare ankle under a cropped trouser","Shiny or sheer black tights","Tights a different colour to both skirt and shoe","Slouchy boots that pool and widen at the ankle","Buckles, straps or hardware at the ankle"]
+  }
+];
+
+const NUMBERS = [
+  {v:"72–80 cm", k:"Midi hem from the natural waist — mid-calf to ankle bone"},
+  {v:"18–23 cm", k:"Bermuda short inseam, landing just above the knee"},
+  {v:"1–1.5 cm", k:"Trouser hem off the floor, in the shoe she'll actually wear"},
+  {v:"4–6 cm", k:"Block heel — enough lift, still walkable all day"},
+  {v:"5–8 cm", k:"Untucked top hem below the natural waist, clear of the widest hip"},
+  {v:"60 / 30 / 10", k:"Neutral, second neutral, hero accent — by area, not by item"}
+];
+
+const TEST = [
+  "<b>Colour.</b> Is it in the palette, light and clear rather than deep or dusty — and if it's going near her face, is it a hero rather than a neutral?",
+  "<b>Coverage.</b> Skirt or dress covers the knee; shorts sit no more than a hand's width above it; neckline stops at or above the top of the bra line.",
+  "<b>The hem landing.</b> Does the hem finish at a narrow point — knee, mid-calf, ankle bone or floor — and not at the widest part of the calf or thigh?",
+  "<b>Horizontals.</b> Anything cutting across the widest thigh or the ankle? Cuffs, turn-ups, straps, tiers, contrast hems, a big print. Any one of them is a fail.",
+  "<b>Fabric below the waist.</b> Matte, skimming, enough weight to hold its own shape. No cling, no shine, no stiffness standing away from the hip.",
+  "<b>Where the interest sits.</b> Is the texture, print, colour and detail above the waist, with the bottom half quiet?"
+];
+
+/* ===================== RENDER THE GUIDE ===================== */
+const el = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+el("palGroups").innerHTML = PALETTE.map(g => `
+  <div class="pal-group">
+    <div class="pal-head"><h3>${esc(g.name)}</h3><span class="pal-role">${esc(g.role)}</span></div>
+    <p>${esc(g.blurb)}</p>
+    <div class="swatches">${g.colors.map(c => `
+      <div class="sw-card">
+        <div class="fill" style="background:${c.hex}"></div>
+        <div class="meta"><div class="nm">${esc(c.name)}</div><div class="hx">${c.hex}</div></div>
+      </div>`).join("")}
+    </div>
+  </div>`).join("") + `
+  <div class="pal-group">
+    <div class="pal-head"><h3>Never</h3><span class="pal-role">Leave it on the rail</span></div>
+    <p>These either grey her out, fight the auburn in her hair, or are too deep to sit beside anything else she owns. Black is the big one — soft navy or bronze taupe does the job every time.</p>
+    <ul class="avoid">${AVOID.map(a => `<li>${esc(a)}</li>`).join("")}</ul>
+  </div>`;
+
+el("formulas").innerHTML = FORMULAS.map(f => `
+  <article class="formula">
+    <div class="ratio">${f.ratio.map(([hex,pct]) => `<i style="background:${hex};width:${pct}%"></i>`).join("")}</div>
+    <h3>${esc(f.title)}</h3>
+    <p>${esc(f.body)}</p>
+    <p class="recipe">${f.recipe}</p>
+  </article>`).join("");
+
+const ruleHTML = (r) => `
+  <article class="rule">
+    <h3>${esc(r.title)} <span class="why">${esc(r.why)}</span></h3>
+    <div class="cols">
+      <div class="col yes"><h4>Yes</h4><ul>${r.yes.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>
+      <div class="col no"><h4>Avoid</h4><ul>${r.no.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>
+    </div>
+  </article>`;
+el("rules").innerHTML = RULES.map(ruleHTML).join("");
+el("legRules").innerHTML = LEG_RULES.map(ruleHTML).join("");
+el("numbers").innerHTML = NUMBERS.map(n => `<div class="num"><div class="v">${esc(n.v)}</div><div class="k">${esc(n.k)}</div></div>`).join("");
+el("checklist").innerHTML = TEST.map(t => `<li>${t}</li>`).join("");
+
+/* ===================== THE PROMPT ===================== */
+const flat = (arr, key) => arr.map(r => `${r.title} — YES: ${r[key === "yes" ? "yes" : "no"].join("; ")}`).join("\n");
+
+function brief() {
+  const pal = PALETTE.map(g =>
+    `${g.name} (${g.role}): ${g.colors.map(c => `${c.name} ${c.hex}`).join(", ")}`).join("\n");
+  const rules = RULES.concat(LEG_RULES).map(r =>
+    `${r.title} [${r.why}]\n  WEARS: ${r.yes.join("; ")}\n  AVOIDS: ${r.no.join("; ")}`).join("\n");
+  return `THE WEARER
+Woman, 170 cm, 74 kg, size 12 (AU/UK) in skirts and shorts. Auburn brown hair, green-blue eyes, mild warm tan.
+Colour season: Light Spring at its coolest edge — light and clear like Spring, pulled back a notch in saturation, leaning to the blue-green half of the wheel. Nothing hot, deep, dusty or icy.
+Fuller thighs and fuller ankles: weight sits lower on the frame. Strategy is a long uninterrupted vertical below the waist and all the interest above it. Never cut the leg with a horizontal line at the widest thigh or at the ankle.
+Conservative dresser by choice: no short shorts, no short skirts or dresses, no above-the-knee hems, no deep necklines, no cling, no bodycon. This is a firm preference, not a suggestion — flag any breach of it plainly.
+
+HER PALETTE
+${pal}
+NEVER: ${AVOID.join(", ")}
+Metals: light gold, rose gold, bronze; brushed silver acceptable; no chrome or gunmetal.
+
+SHAPE RULES
+${rules}
+
+KEY MEASUREMENTS (170 cm frame)
+${NUMBERS.map(n => `${n.v} — ${n.k}`).join("\n")}
+
+THE 6-POINT TEST — score against exactly these
+${TEST.map((t, i) => `${i + 1}. ${t.replace(/<[^>]+>/g, "")}`).join("\n")}`;
+}
+
+const MODE_TASK = {
+  garment: "The images show ONE GARMENT (a product shot, shop listing or screenshot). Judge whether she should buy it. If a reference photo of her is included, judge the colour against her actual colouring, not an average.",
+  outfit:  "The images show HER WEARING A FULL LOOK. Judge the whole outfit as worn: colour combination, proportion, hem landings, horizontal lines, coverage, and the shoes. Be warm but genuinely useful — say what to change, not only what is wrong.",
+  pair:    "The images show a garment she already owns or intends to buy. Assume she is keeping it. Your job is mostly what to WEAR IT WITH: name specific pieces, colours and shoes from her palette that build a complete outfit around it, and say which of the six pairing formulas it is following.",
+  compare: "The images show SEVERAL OPTIONS. Rank them best to worst for her, say clearly which one to take, and give the deciding reason. Set the verdict and score for your top pick."
+};
+
+const SCHEMA = `Reply with ONLY a JSON object, no other text, in exactly this shape:
+{"verdict":"yes"|"tweak"|"no","headline":"one sentence, max 15 words, plain and direct","score":0-100,"axes":[{"name":"Colour","rating":"good"|"ok"|"poor","note":"one or two sentences"},{"name":"Silhouette","rating":"...","note":"..."},{"name":"Hem & line","rating":"...","note":"..."},{"name":"Coverage","rating":"...","note":"..."},{"name":"Fabric","rating":"...","note":"..."}],"fixes":["specific, actionable change","..."],"pairWith":["specific garment, colour named, from her palette","..."],"colours":["#RRGGBB","#RRGGBB","#RRGGBB"]}
+Rules for the JSON: keep all five axes in that order; "fixes" is 2-4 items (use it for what would make a tweak into a yes, or an empty array if it is already a yes); "pairWith" is 2-4 items; "colours" is exactly three hex codes taken from her palette above that go with the item. "verdict" is "yes" only when it passes at least four of the six test points and breaches none of the coverage rules.`;
+
+function buildPrompt(mode, ctx, hasRef) {
+  return `You are her personal stylist. Judge the attached image(s) against this brief and nothing else. Be specific and concrete — name hem lengths in cm, name colours, name garments. Never suggest anything on her avoid lists. Do not soften a real problem, and do not invent problems that are not visible in the image.
+
+${brief()}
+
+THE TASK
+${MODE_TASK[mode]}
+${hasRef ? "The FIRST image(s) are reference photos of her — use them to judge colour against her real skin, hair and eyes. The remaining images are the item(s) in question." : "No reference photo of her was provided this time; judge colour from the written brief above."}
+${ctx ? `\nHer note about this: ${ctx}` : ""}
+
+${SCHEMA}`;
+}
+
+/* ===================== FITTING ROOM ===================== */
+const state = { mode:"garment", refs:[], items:[], maxImages:4, saved:[], sample:null, assets:null, db:null, abort:null };
+
+function thumbHTML(list, kind) {
+  return list.map((f, i) => `
+    <div class="thumb">
+      <img src="${f.url}" alt="${kind} ${i + 1}">
+      <button type="button" data-kind="${kind}" data-i="${i}" aria-label="Remove">&times;</button>
+    </div>`).join("");
+}
+function drawThumbs() {
+  el("refThumbs").innerHTML = thumbHTML(state.refs, "ref");
+  el("itemThumbs").innerHTML = thumbHTML(state.items, "item");
+  el("refCount").textContent = state.refs.length ? `${state.refs.length} on file` : "";
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest(".thumb button");
+  if (!b) return;
+  const list = b.dataset.kind === "ref" ? state.refs : state.items;
+  const [gone] = list.splice(Number(b.dataset.i), 1);
+  if (gone && gone.url.startsWith("blob:")) URL.revokeObjectURL(gone.url);
+  if (gone && gone.assetId && state.db) {
+    state.db.doc("profile/reference").set({ ids: state.refs.map(r => r.assetId).filter(Boolean) }).catch(() => {});
+  }
+  drawThumbs();
+});
+
+function addFiles(kind, fileList) {
+  const list = kind === "ref" ? state.refs : state.items;
+  for (const file of fileList) {
+    if (!file.type.startsWith("image/")) continue;
+    const entry = { file, url: URL.createObjectURL(file) };
+    list.push(entry);
+    if (kind === "ref" && state.assets) {
+      state.assets.upload(file).then(r => {
+        entry.assetId = r.id;
+        if (state.db) state.db.doc("profile/reference")
+          .set({ ids: state.refs.map(x => x.assetId).filter(Boolean) }).catch(() => {});
+      }).catch(() => {});
+    }
+  }
+  drawThumbs();
+}
+
+function wireDrop(btnId, inputId, kind) {
+  const btn = el(btnId), input = el(inputId);
+  btn.addEventListener("click", () => input.click());
+  input.addEventListener("change", () => { addFiles(kind, input.files); input.value = ""; });
+  btn.addEventListener("dragover", (e) => { e.preventDefault(); btn.classList.add("over"); });
+  btn.addEventListener("dragleave", () => btn.classList.remove("over"));
+  btn.addEventListener("drop", (e) => {
+    e.preventDefault(); btn.classList.remove("over");
+    if (e.dataTransfer?.files?.length) addFiles(kind, e.dataTransfer.files);
+  });
+}
+wireDrop("refDrop", "refInput", "ref");
+wireDrop("itemDrop", "itemInput", "item");
+
+el("modes").addEventListener("click", (e) => {
+  const b = e.target.closest(".mode"); if (!b) return;
+  state.mode = b.dataset.mode;
+  for (const m of el("modes").querySelectorAll(".mode")) m.setAttribute("aria-pressed", String(m === b));
+});
+
+function setStatus(text, busy) {
+  el("status").innerHTML = text ? `${busy ? '<span class="spin"></span>' : ""}<span>${esc(text)}</span>` : "";
+}
+
+const EXAMPLE = {
+  verdict:"tweak", score:68,
+  headline:"Right colour, wrong hem — it stops at the widest part of the calf.",
+  axes:[
+    {name:"Colour", rating:"good", note:"Warm aqua is one of her strongest heroes and it is sitting high enough to catch her face."},
+    {name:"Silhouette", rating:"good", note:"A-line through the skirt with a defined waist seam — the shape is doing its job."},
+    {name:"Hem & line", rating:"poor", note:"The hem lands at roughly 64 cm, which is the widest point of the calf. Needs to drop to 74–78 cm."},
+    {name:"Coverage", rating:"good", note:"Covers the knee, modest boat neckline, elbow sleeves. On brief."},
+    {name:"Fabric", rating:"ok", note:"Light viscose will cling over the hip in wind. Lined, or a heavier crepe, would hold better."}
+  ],
+  fixes:["Take the hem to 74–78 cm so it finishes at the ankle bone","Wear with a camel-beige pointed flat, not a dark ankle boot","Add a half-lining through the hip"],
+  pairWith:["Ivory longline cardigan","Soft coral silk scarf","Camel-beige pointed flats"],
+  colours:["#F6F0E4","#F0907A","#D6B79A"],
+  isExample:true
+};
+
+function verdictHTML(v) {
+  const label = { yes:"Yes — buy it", tweak:"Yes, with a tweak", no:"Not this one" }[v.verdict] || "Verdict";
+  return `
+  <div class="verdict">
+    <div class="verdict-top ${esc(v.verdict)}">
+      <span class="stamp ${esc(v.verdict)}">${esc(label)}</span>
+      <div>
+        <p>${esc(v.headline || "")}</p>
+        <p class="small mono" style="margin-top:4px">${Number(v.score) || 0}/100 against the 6-point test</p>
+      </div>
+    </div>
+    <div class="axes">${(v.axes || []).map(a => `
+      <div class="axis">
+        <div class="axis-name"><span class="dot ${esc(a.rating)}"></span>${esc(a.name)}</div>
+        <div class="axis-note">${esc(a.note)}</div>
+      </div>`).join("")}
+    </div>
+    <div class="verdict-foot">
+      ${(v.fixes || []).length ? `<div><h4>What would fix it</h4><ul>${v.fixes.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>` : ""}
+      ${(v.pairWith || []).length ? `<div><h4>Wear it with</h4><ul>${v.pairWith.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>` : ""}
+      ${(v.colours || []).length ? `<div><h4>Colours that go with it</h4><div class="hexrow">${v.colours.map(h => `
+        <span class="hexchip"><span class="sw" style="background:${/^#[0-9a-f]{6}$/i.test(h) ? h : "#ccc"}"></span><span class="mono">${esc(h)}</span></span>`).join("")}</div></div>` : ""}
+    </div>
+  </div>`;
+}
+
+function drawSaved() {
+  el("savedCount").textContent = state.saved.length ? `${state.saved.length}` : "";
+  if (!state.saved.length) {
+    el("saved").innerHTML = `<p class="small" style="grid-column:1/-1">Every verdict is kept here with its photo, so you can look back at what worked before buying something similar.</p>`;
+    return;
+  }
+  el("saved").innerHTML = state.saved.map(r => `
+    <article class="card">
+      ${r.assetId ? `<figure><img src="/_blob/${esc(r.assetId)}" alt="" loading="lazy"></figure>` : ""}
+      <div class="card-body">
+        <span class="chip ${r.isExample ? "example" : esc(r.verdict)}">${r.isExample ? "Example" : esc({ yes:"Yes", tweak:"Tweak", no:"No" }[r.verdict] || "—")}</span>
+        <p>${esc(r.headline || "")}</p>
+      </div>
+    </article>`).join("");
+}
+drawSaved();
+el("verdictSlot").innerHTML = '<p class="ex-label">Example verdict</p>' + verdictHTML(EXAMPLE);
+
+el("stop").addEventListener("click", () => state.abort?.abort());
+
+el("go").addEventListener("click", async () => {
+  if (!state.sample) return;
+  if (!state.items.length) { setStatus("Add at least one photo of the clothes first.", false); return; }
+
+  const refs = state.refs.slice(0, Math.max(0, state.maxImages - 1));
+  const items = state.items.slice(0, Math.max(1, state.maxImages - refs.length));
+  const images = [...refs.map(r => r.file), ...items.map(i => i.file)];
+
+  const ctl = new AbortController(); state.abort = ctl;
+  el("go").disabled = true; el("stop").hidden = false;
+  setStatus("Claude is looking at it — this usually takes 15 to 40 seconds.", true);
+
+  try {
+    const v = await state.sample.json(
+      buildPrompt(state.mode, el("ctx").value.trim(), refs.length > 0),
+      { images, modelTier: "complex", cache: false, signal: ctl.signal }
+    );
+    if (!v || !v.verdict) throw { code: "bad_shape", message: "The reply came back in an unexpected shape. Try again." };
+    el("verdictSlot").innerHTML = verdictHTML(v);
+    el("verdictSlot").scrollIntoView({ block: "nearest" });
+    setStatus("", false);
+
+    if (state.db) {
+      let assetId = null;
+      if (state.assets) assetId = await state.assets.upload(items[0].file).then(r => r.id).catch(() => null);
+      const row = { verdict: v.verdict, headline: v.headline || "", score: Number(v.score) || 0, mode: state.mode, assetId, at: new Date().toISOString() };
+      await state.db.collection("looks").add(row).catch(() => {});
+    }
+  } catch (e) {
+    const msg = {
+      not_granted: "Verdicts need your permission to ask Claude. Reload and choose Allow to turn this on.",
+      rate_limited: "Too many checks at once — give it a minute and try again.",
+      cancelled: "Stopped.",
+      images_unavailable: "This view can't send images to Claude. Open the page from claude.ai and try again.",
+      image_rejected: "One of those images couldn't be read. Try a JPEG or PNG under 20 MB.",
+      invalid_json: "Claude's answer didn't come back as clean data. Try once more."
+    }[e?.code] || e?.message || "Something went wrong. Try again.";
+    setStatus(msg, false);
+  } finally {
+    el("go").disabled = false; el("stop").hidden = true; state.abort = null;
+  }
+});
+
+/* ===================== BOOT CAPABILITIES ===================== */
+(async () => {
+  const sample = await window.claude?.use?.("sample").catch(() => null);
+  if (!sample) { el("noSample").hidden = false; el("go").disabled = true; return; }
+  state.sample = sample;
+
+  const caps = await sample.limits().catch(() => null);
+  if (!caps?.images) {
+    el("noSample").hidden = false;
+    el("noSample").innerHTML = "<b>Photo checks are off in this view.</b> Claude can't be sent images here, so the fitting room is unavailable. The guide below still applies.";
+    el("go").disabled = true;
+    return;
+  }
+  state.maxImages = caps.images.maxCount || 4;
+  el("refInput").accept = el("itemInput").accept = caps.images.mediaTypes.join(",");
+})();
+
+(async () => {
+  state.assets = await window.claude?.use?.("assets").catch(() => null);
+  state.db = await window.claude?.use?.("db").catch(() => null);
+  if (!state.db) return;
+
+  state.db.collection("looks").orderBy("at", "desc").limit(24).onSnapshot(
+    (snap) => { state.saved = snap.docs.map(d => d.data()); drawSaved(); },
+    () => {}
+  );
+
+  // Bring her reference photos back as thumbnails, and re-attach them to this
+  // session's checks if the stored bytes can be read back.
+  const ref = await state.db.doc("profile/reference").get().catch(() => null);
+  for (const id of (ref?.exists ? (ref.data()?.ids || []) : [])) {
+    if (state.refs.some(r => r.assetId === id)) continue;
+    try {
+      const blob = await fetch("/_blob/" + id).then(r => r.ok ? r.blob() : null);
+      if (blob) state.refs.push({ file: new File([blob], "reference.jpg", { type: blob.type || "image/jpeg" }), url: URL.createObjectURL(blob), assetId: id });
+    } catch { /* stored but not readable here — the written brief still covers her colouring */ }
+  }
+  drawThumbs();
+})();
+
+/* Smooth section nav */
+for (const a of document.querySelectorAll(".nav a")) {
+  a.addEventListener("click", (e) => {
+    const t = document.querySelector(a.getAttribute("href"));
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  });
+}
+</script>
