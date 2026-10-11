@@ -165,6 +165,14 @@ export function SiteFooter() {
         </div>
         <div className="wrap foot-bottom">
           <div className="charity">
+            <a className="tick" href={ACNC_REGISTER_URL} target="_blank" rel="noopener">
+              <img
+                src="/img/acnc-registered-charity-tick.png"
+                alt="Registered Charity: view Christians in Politics Australia on the ACNC Charity Register"
+                width={88}
+                height={88}
+              />
+            </a>
             <p>
               <b>Christians in Politics Australia Ltd · ABN 93 697 747 630</b>
               <span>
