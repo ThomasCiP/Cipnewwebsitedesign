@@ -24,7 +24,7 @@ export function FfFMark({ small = false }: { small?: boolean }) {
 }
 
 export const TAGLINE =
-  "Inviting Christians into the public square and connecting them to one another for mutual encouragement, and for Christ’s presence to be known by all those in the public square.";
+  "Inviting Christians into the public square, and bringing them together to encourage one another, so that Christ is known in every corner of public life.";
 
 export function AppStoreBadge({ onDark = false }: { onDark?: boolean }) {
   return (

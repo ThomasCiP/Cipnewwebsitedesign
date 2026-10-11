@@ -28,7 +28,7 @@ export default function Home() {
             <h1 id="hero-title">
               Inviting Christians into the <em>public square.</em>
             </h1>
-            <p>Connecting Christians to one another for mutual encouragement, and for Christ’s presence to be known by all those in the public square.</p>
+            <p>Bringing Christians together to encourage one another, so that Christ is known in every corner of public life.</p>
             <div className="store-row">
               <AppStoreBadge />
               <Link className="btn btn-outline" to="/events">See upcoming events</Link>
