@@ -7,6 +7,22 @@ export const APP_STORE_URL = "https://apps.apple.com/au/app/cip-network/id679498
 export const PORTAL_URL = "https://network.christiansinpolitics.com/";
 export const CONTACT_EMAIL = "contact@christiansinpolitics.com";
 
+// Christians in Politics Australia Ltd's entry on the ACNC Charity Register.
+export const ACNC_REGISTER_URL = "https://www.acnc.gov.au/charity/charities?search=93697747630";
+
+// Freedom for Faith's site icon, loaded from their website. If it ever fails to
+// load, the "FfF" text badge is shown instead.
+const FFF_ICON_URL = "https://freedomforfaith.org.au/wp-content/uploads/2020/11/cropped-favicon-270x270.png";
+
+export function FfFMark({ small = false }: { small?: boolean }) {
+  const [failed, setFailed] = useState(false);
+  const cls = small ? "ff sm" : "ff";
+  if (failed) {
+    return <span className={cls} aria-hidden="true">FfF</span>;
+  }
+  return <img className={cls} src={FFF_ICON_URL} alt="" aria-hidden="true" onError={() => setFailed(true)} />;
+}
+
 export const TAGLINE =
   "Inviting Christians into the public square and connecting them to one another for mutual encouragement, and for Christ’s presence to be known by all those in the public square.";
 
@@ -148,7 +164,16 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="wrap foot-bottom">
-          <span>© {new Date().getFullYear()} Christians in Politics Australia Ltd · ABN 93 697 747 630 · A charity registered with the ACNC</span>
+          <div className="charity">
+            <p>
+              <b>Christians in Politics Australia Ltd · ABN 93 697 747 630</b>
+              <span>
+                A registered charity with the Australian Charities and Not-for-profits Commission.{" "}
+                <a href={ACNC_REGISTER_URL} target="_blank" rel="noopener">View us on the ACNC Charity Register</a>
+              </span>
+              <span>© {new Date().getFullYear()} Christians in Politics Australia Ltd</span>
+            </p>
+          </div>
           <nav aria-label="Legal">
             <Link to="/privacy">Privacy Policy</Link>
             <Link to="/support">Support</Link>

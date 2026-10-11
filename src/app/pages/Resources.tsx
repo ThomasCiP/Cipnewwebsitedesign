@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Icon } from "../components/cip/Sprite";
+import { FfFMark } from "../components/cip/site";
 
 type Kind = "submission" | "guide";
 
@@ -79,7 +80,7 @@ export default function Resources() {
       <section className="band" style={{ paddingTop: 48 }}>
         <div className="wrap" style={{ display: "grid", gap: 24 }}>
           <div className="attrib">
-            <span className="ff" aria-hidden="true">FfF</span>
+            <FfFMark />
             <p>
               <b>Featuring submissions by Freedom for Faith,</b> shared with their permission. Each summary is written by CiP and links back to the original on freedomforfaith.org.au.
             </p>
@@ -126,7 +127,7 @@ export default function Resources() {
                   <p className="source">
                     {r.source === "fff" ? (
                       <>
-                        <span className="ff sm" aria-hidden="true">FfF</span>
+                        <FfFMark small />
                         <span>Submission by <b>Freedom for Faith</b> · {r.sourceNote} <Icon name="ext" /></span>
                       </>
                     ) : (

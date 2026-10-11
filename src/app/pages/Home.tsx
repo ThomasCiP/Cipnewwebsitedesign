@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router";
 import { Icon } from "../components/cip/Sprite";
-import { AndroidNote, AppStoreBadge, CONTACT_EMAIL, PORTAL_URL } from "../components/cip/site";
+import { AndroidNote, AppStoreBadge, CONTACT_EMAIL, FfFMark, PORTAL_URL } from "../components/cip/site";
 
 type HostKind = "church" | "uni" | "other";
 
@@ -126,7 +126,7 @@ export default function Home() {
           <div className="partner-box">
             <h3>Partner organisations</h3>
             <a className="partner" href="https://freedomforfaith.org.au/" target="_blank" rel="noopener">
-              <span className="ff" aria-hidden="true">FfF</span>
+              <FfFMark />
               <span className="ptext"><b>Freedom for Faith</b><span>A Christian legal think tank protecting religious freedom in Australia</span></span>
             </a>
           </div>

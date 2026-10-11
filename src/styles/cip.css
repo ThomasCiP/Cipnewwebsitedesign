@@ -350,3 +350,12 @@ html { scroll-behavior: auto; }
 .cip .site-head-inner { position: static; }
 .cip .host-note { margin-top: 12px; font-size: 15px; color: var(--ink-soft); }
 .cip .host-note a { color: var(--copper-dark); }
+
+/* Freedom for Faith's own icon, served from their site; falls back to the FfF text badge. */
+.cip img.ff { background: #fff; border: 1px solid var(--line); object-fit: contain; padding: 2px; }
+
+/* Registered charity details */
+.cip .charity { display: flex; gap: 14px; align-items: center; }
+.cip .charity p { display: grid; gap: 2px; }
+.cip .charity b { color: #e9dfd9; font-weight: 600; }
+.cip .charity a { text-decoration: underline; text-underline-offset: 2px; }
