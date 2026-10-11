@@ -66,7 +66,7 @@ const ROUTES = [
     out: 'index.html',
     title: 'Christians in Politics Australia | Faith in Public Life',
     description:
-      'Christians in Politics (CiP) is a non-partisan Australian network encouraging Christians to engage relationally in public life. Invite us to your church or campus, or join our network.',
+      'Inviting Christians into the public square and connecting them to one another. Download the CiP Network app, come to an event or invite CiP to your church.',
   },
   {
     path: '/start-here',
@@ -87,7 +87,7 @@ const ROUTES = [
     out: 'events/index.html',
     title: 'Events | Christians in Politics Australia',
     description:
-      'Gatherings, training and prayer meetings for Christians engaging in politics across NSW, the ACT and online. See where CiP will be next.',
+      'Talks, breakfasts and campus nights where Christians in public life meet, learn and encourage one another. Find upcoming events in the CiP Network app.',
   },
   {
     path: '/partners',
@@ -101,7 +101,7 @@ const ROUTES = [
     out: 'resources/index.html',
     title: 'Resources | Christians in Politics Australia',
     description:
-      'Articles, guides and videos to help Australian Christians engage faithfully in politics — from understanding the political system to church resources and prayer guides.',
+      'Submissions, guides and talks on faith, politics and public life, including submissions by our partner Freedom for Faith. Free to read and share.',
   },
   {
     path: '/about',

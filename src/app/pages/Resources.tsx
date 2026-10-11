@@ -1,126 +1,150 @@
-import { FileText, Download, PlayCircle, BookOpen, ExternalLink } from "lucide-react";
-import { Link } from "react-router";
+import { useState } from "react";
+import { Icon } from "../components/cip/Sprite";
 
-type ResourceItem = {
+type Kind = "submission" | "guide";
+
+type Resource = {
+  kind: Kind;
+  href: string;
+  label: string; // date or category shown top-right
   title: string;
-  type: string;
-  icon: typeof FileText;
-  to?: string; // internal route
-  href?: string; // external URL
-  comingSoon?: boolean;
+  tags?: string[];
+  summary: string;
+  source: "fff" | "cip";
+  sourceNote: string;
 };
 
-const resources: { category: string; items: ResourceItem[] }[] = [
+// Freedom for Faith submissions are shared with their permission: each one must
+// credit them and link back to freedomforfaith.org.au. Only submissions from the
+// last 12 months belong here.
+const RESOURCES: Resource[] = [
   {
-    category: "Getting Started",
-    items: [
-      { title: "Why join a political party?", type: "Article", icon: FileText, to: "/about" },
-      { title: "Understanding the Australian Political System", type: "Guide", icon: BookOpen, href: "https://peo.gov.au/" },
-      { title: "How to choose a party that fits you", type: "Tool", icon: FileText, to: "/join" },
-    ]
+    kind: "submission",
+    href: "https://freedomforfaith.org.au/articles/nsw-greenshr/",
+    label: "10 Jul 2026",
+    title: "NSW Greens’ Human Rights Bill",
+    tags: ["NSW", "Human rights"],
+    summary: "Freedom for Faith’s submission to the NSW parliamentary inquiry into the Greens’ Human Rights Bill. The full submission will be published by the Committee.",
+    source: "fff",
+    sourceNote: "Read on freedomforfaith.org.au",
   },
   {
-    category: "Faithful Public Life",
-    items: [
-      { title: "The Salt and Light Framework", type: "Video", icon: PlayCircle, comingSoon: true },
-      { title: "Disagreement without Division", type: "Article", icon: FileText, comingSoon: true },
-      { title: "Prayer Guide for Public Officials", type: "PDF", icon: Download, comingSoon: true },
-    ]
+    kind: "submission",
+    href: "https://freedomforfaith.org.au/articles/fed-electmat/",
+    label: "17 Nov 2025",
+    title: "Federal inquiry into the 2025 election",
+    tags: ["Federal", "Electoral matters"],
+    summary: "A submission to the Joint Standing Committee on Electoral Matters’ inquiry into the 2025 federal election, on the political volunteering of members of a church.",
+    source: "fff",
+    sourceNote: "Read on freedomforfaith.org.au",
   },
   {
-    category: "For Churches",
-    items: [
-      { title: "CiP Church Promo Kit", type: "Download", icon: Download, comingSoon: true },
-      { title: "Hosting a 'Christians in Politics' Sunday", type: "Guide", icon: BookOpen, to: "/contact" },
-      { title: "Small Group Discussion Guide", type: "PDF", icon: Download, comingSoon: true },
-    ]
-  }
+    kind: "guide",
+    href: "https://peo.gov.au/",
+    label: "The basics",
+    title: "Understanding the Australian political system",
+    summary: "How parliament, parties and elections work, with links to the Parliamentary Education Office’s free explainers.",
+    source: "cip",
+    sourceNote: "links to peo.gov.au",
+  },
+];
+
+const FILTERS: { key: Kind | "all"; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "submission", label: "Submissions" },
+  { key: "guide", label: "Guides" },
 ];
 
 export default function Resources() {
-  return (
-    <div className="bg-charcoal-50 min-h-screen py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-charcoal-900 sm:text-4xl">
-            Resources
-          </h1>
-          <p className="mt-4 text-lg leading-8 text-charcoal-600">
-            Equipping you with the tools, knowledge, and encouragement to engage faithfully in the public square.
-          </p>
-        </div>
+  const [filter, setFilter] = useState<Kind | "all">("all");
+  const [query, setQuery] = useState("");
 
-        <div className="mt-16 space-y-20 lg:mt-20 lg:space-y-20">
-          {resources.map((section) => (
-            <article key={section.category} className="relative isolate flex flex-col gap-8 lg:flex-row">
-              <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0">
-                <div className="absolute inset-0 rounded-2xl bg-copper-50 ring-1 ring-inset ring-charcoal-900/10 flex items-center justify-center">
-                    <h3 className="text-xl font-bold text-copper-800 text-center px-4">{section.category}</h3>
+  const q = query.trim().toLowerCase();
+  const shown = RESOURCES.filter(
+    (r) =>
+      (filter === "all" || r.kind === filter) &&
+      (!q || [r.title, r.summary, r.label, ...(r.tags ?? [])].join(" ").toLowerCase().includes(q)),
+  );
+
+  return (
+    <div className="cip">
+      <section className="page-hero">
+        <div className="bg" style={{ backgroundImage: "url('/img/church.jpg')", backgroundPosition: "center 40%" }} />
+        <div className="wrap">
+          <h1>Resources</h1>
+          <p className="sub">Submissions, guides and talks on faith, politics and public life, free to read and share.</p>
+        </div>
+      </section>
+
+      <section className="band" style={{ paddingTop: 48 }}>
+        <div className="wrap" style={{ display: "grid", gap: 24 }}>
+          <div className="attrib">
+            <span className="ff" aria-hidden="true">FfF</span>
+            <p>
+              <b>Featuring submissions by Freedom for Faith,</b> shared with their permission. Each summary is written by CiP and links back to the original on freedomforfaith.org.au.
+            </p>
+            <a className="btn btn-outline" href="https://freedomforfaith.org.au/" target="_blank" rel="noopener">
+              Visit Freedom for Faith <Icon name="ext" />
+            </a>
+          </div>
+
+          <div className="toolbar">
+            <div className="chips" role="group" aria-label="Filter by type">
+              {FILTERS.map((f) => (
+                <button key={f.key} className="chip-btn" type="button" aria-pressed={filter === f.key} onClick={() => setFilter(f.key)}>
+                  {f.label}
+                </button>
+              ))}
+            </div>
+            <div className="toolbar-end">
+              <label className="search" htmlFor="filter-search">
+                <Icon name="search" />
+                <input id="filter-search" type="search" placeholder="Search resources" aria-label="Search resources" value={query} onChange={(e) => setQuery(e.target.value)} />
+              </label>
+              <span className="count" aria-live="polite">
+                {shown.length} {shown.length === 1 ? "resource" : "resources"}
+              </span>
+            </div>
+          </div>
+
+          <h2 className="sr-only">All resources</h2>
+          <div className="cards3">
+            {shown.map((r) => (
+              <a className={r.source === "cip" ? "card res guide" : "card res"} key={r.href} href={r.href} target="_blank" rel="noopener">
+                <div className="top">
+                  <span className="type">{r.kind === "submission" ? "Submission" : "Guide"}</span>
+                  <span className="date">{r.label}</span>
                 </div>
-              </div>
-              <div>
-                <div className="flex items-center gap-x-4 text-xs">
-                  <span className="text-charcoal-500">Latest Updates</span>
-                </div>
-                <div className="group relative max-w-xl">
-                  <h3 className="mt-3 text-lg font-semibold leading-6 text-charcoal-900 group-hover:text-copper-600">
-                    <span className="absolute inset-0" />
-                    Recommended Reading & Tools
-                  </h3>
-                  <p className="mt-5 text-sm leading-6 text-charcoal-600">
-                    Explore our curated collection of resources designed to help you navigate the complexities of political engagement with wisdom and grace.
+                <div className="body">
+                  <h3>{r.title}</h3>
+                  {r.tags && (
+                    <div className="tags">
+                      {r.tags.map((t) => <span className="tag-pill" key={t}>{t}</span>)}
+                    </div>
+                  )}
+                  <p>{r.summary}</p>
+                  <p className="source">
+                    {r.source === "fff" ? (
+                      <>
+                        <span className="ff sm" aria-hidden="true">FfF</span>
+                        <span>Submission by <b>Freedom for Faith</b> · {r.sourceNote} <Icon name="ext" /></span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="ff sm cip" aria-hidden="true">CiP</span>
+                        <span>By <b>Christians in Politics</b> · {r.sourceNote}</span>
+                      </>
+                    )}
                   </p>
                 </div>
-                <div className="mt-6 flex border-t border-charcoal-900/5 pt-6">
-                    <ul className="w-full space-y-4">
-                        {section.items.map((item) => {
-                            const isLink = Boolean(item.to || item.href);
-                            return (
-                            <li
-                                key={item.title}
-                                className={`relative flex items-center gap-x-4 rounded-lg p-4 transition-all ${
-                                    isLink ? "hover:bg-white hover:shadow-sm" : "opacity-70"
-                                }`}
-                            >
-                                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-charcoal-100">
-                                    <item.icon className="h-5 w-5 text-charcoal-600" aria-hidden="true" />
-                                </div>
-                                <div className="flex-auto">
-                                    <h4 className="text-sm font-semibold leading-6 text-charcoal-900">
-                                        {item.to ? (
-                                            <Link to={item.to} className="hover:text-copper-600">
-                                                <span className="absolute inset-0" />
-                                                {item.title}
-                                            </Link>
-                                        ) : item.href ? (
-                                            <a href={item.href} target="_blank" rel="noopener noreferrer" className="hover:text-copper-600">
-                                                <span className="absolute inset-0" />
-                                                {item.title}
-                                            </a>
-                                        ) : (
-                                            <span className="text-charcoal-700">{item.title}</span>
-                                        )}
-                                    </h4>
-                                    <p className="mt-1 flex items-center gap-2 text-xs leading-5 text-charcoal-500">
-                                        {item.type}
-                                        {item.href && <ExternalLink className="h-3 w-3" aria-hidden="true" />}
-                                        {item.comingSoon && (
-                                            <span className="inline-flex items-center rounded-full bg-charcoal-100 px-2 py-0.5 text-[10px] font-medium text-charcoal-500 ring-1 ring-inset ring-charcoal-200">
-                                                Coming soon
-                                            </span>
-                                        )}
-                                    </p>
-                                </div>
-                            </li>
-                            );
-                        })}
-                    </ul>
-                </div>
-              </div>
-            </article>
-          ))}
+              </a>
+            ))}
+            {shown.length === 0 && (
+              <p className="empty" style={{ gridColumn: "1 / -1" }}>No resources match that search. Try another word, or choose All.</p>
+            )}
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
