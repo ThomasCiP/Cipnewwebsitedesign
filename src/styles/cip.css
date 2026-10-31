@@ -271,7 +271,7 @@ html { scroll-behavior: auto; }
 .cip .tag-pill { font-size: 12.5px; font-weight: 700; color: var(--copper-deep); background: var(--copper-tint); border-radius: 99px; padding: 2px 10px; }
 @media (max-width: 900px) {
 .cip .event { grid-template-columns: 80px 1fr; grid-template-areas: "when info" "act act"; }
-.cip .event .when { grid-area: when; }
+.cip .event .when { grid-area: when; align-self: start; }
 .cip .event .info { grid-area: info; }
 .cip .event .thumb { display: none; }
 .cip .event .act { grid-area: act; }
