@@ -1,6 +1,24 @@
 import { Icon } from "../components/cip/Sprite";
 import { AppStoreBadge, PORTAL_URL } from "../components/cip/site";
 
+// Upcoming events drop off the list once they have finished. When none are left,
+// only the app callout shows.
+const UPCOMING_EVENTS = [
+  {
+    title: "Christians in Politics Launch & Vic State Election Watching Party",
+    day: "28",
+    month: "Nov",
+    weekday: "Sat",
+    ends: "2026-11-28T20:00:00+11:00",
+    thumb: "Launch",
+    time: "5pm – 8pm AEDT",
+    venue: "Neutral Bay Bowling Club, 3 Westleigh St, Neutral Bay NSW",
+    summary:
+      "A relaxed evening to unofficially launch Christians in Politics and watch the Victorian state election results come in together. Grazing platters and pizzas provided, bar open for drinks at your own cost, barefoot bowls on offer and kids welcome. Kingdom before party.",
+    tickets: "https://events.humanitix.com/christians-in-politics-launch-and-vic-state-election-watching-party",
+  },
+];
+
 const RECENT_EVENTS = [
   {
     title: "Faith in Action: Christians engaging in politics",
@@ -19,6 +37,7 @@ const RECENT_EVENTS = [
 ];
 
 export default function Events() {
+  const upcoming = UPCOMING_EVENTS.filter((e) => new Date(e.ends).getTime() > Date.now());
   return (
     <div className="cip">
       <section className="page-hero">
@@ -34,6 +53,33 @@ export default function Events() {
           <div className="sec-head">
             <h2>Upcoming events</h2>
           </div>
+          {upcoming.length > 0 && (
+            <div className="event-list">
+              {upcoming.map((e) => (
+                <article className="event" key={e.title}>
+                  <div className="when">
+                    <b>{e.day}</b>
+                    <span>{e.month}</span>
+                    <small>{e.weekday}</small>
+                  </div>
+                  <div className="thumb" aria-hidden="true"><Icon name="cal" />{e.thumb}</div>
+                  <div className="info">
+                    <h3>{e.title}</h3>
+                    <p className="meta">
+                      <span><Icon name="clock" />{e.time}</span>
+                      <span><Icon name="pin" />{e.venue}</span>
+                    </p>
+                    <p>{e.summary}</p>
+                  </div>
+                  <div className="act">
+                    <a className="btn btn-primary" href={e.tickets} target="_blank" rel="noopener">
+                      Get tickets<span className="sr-only"> for {e.title} (opens Humanitix)</span>
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
           <div className="callout">
             <img src="/img/app-icon.png" alt="" width={56} height={56} />
             <div>
